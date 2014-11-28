@@ -1,0 +1,429 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04832D451A28073900C64204 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04832D441A28073900C64204 /* main.m */; };
+		04832D481A28073900C64204 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04832D471A28073900C64204 /* AppDelegate.m */; };
+		04832D4B1A28073900C64204 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04832D4A1A28073900C64204 /* ViewController.m */; };
+		04832D4E1A28073900C64204 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04832D4C1A28073900C64204 /* Main.storyboard */; };
+		04832D501A28073900C64204 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04832D4F1A28073900C64204 /* Images.xcassets */; };
+		04832D531A28073900C64204 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04832D511A28073900C64204 /* LaunchScreen.xib */; };
+		04832D5F1A28073900C64204 /* bodhiWordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04832D5E1A28073900C64204 /* bodhiWordTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		04832D591A28073900C64204 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04832D371A28073900C64204 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04832D3E1A28073900C64204;
+			remoteInfo = bodhiWord;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04832D3F1A28073900C64204 /* bodhiWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bodhiWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04832D431A28073900C64204 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04832D441A28073900C64204 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		04832D461A28073900C64204 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		04832D471A28073900C64204 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		04832D491A28073900C64204 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		04832D4A1A28073900C64204 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		04832D4D1A28073900C64204 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		04832D4F1A28073900C64204 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		04832D521A28073900C64204 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		04832D581A28073900C64204 /* bodhiWordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bodhiWordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		04832D5D1A28073900C64204 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04832D5E1A28073900C64204 /* bodhiWordTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bodhiWordTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04832D3C1A28073900C64204 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04832D551A28073900C64204 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04832D361A28073900C64204 = {
+			isa = PBXGroup;
+			children = (
+				04832D411A28073900C64204 /* bodhiWord */,
+				04832D5B1A28073900C64204 /* bodhiWordTests */,
+				04832D401A28073900C64204 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		04832D401A28073900C64204 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04832D3F1A28073900C64204 /* bodhiWord.app */,
+				04832D581A28073900C64204 /* bodhiWordTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04832D411A28073900C64204 /* bodhiWord */ = {
+			isa = PBXGroup;
+			children = (
+				04832D461A28073900C64204 /* AppDelegate.h */,
+				04832D471A28073900C64204 /* AppDelegate.m */,
+				04832D491A28073900C64204 /* ViewController.h */,
+				04832D4A1A28073900C64204 /* ViewController.m */,
+				04832D4C1A28073900C64204 /* Main.storyboard */,
+				04832D4F1A28073900C64204 /* Images.xcassets */,
+				04832D511A28073900C64204 /* LaunchScreen.xib */,
+				04832D421A28073900C64204 /* Supporting Files */,
+			);
+			path = bodhiWord;
+			sourceTree = "<group>";
+		};
+		04832D421A28073900C64204 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04832D431A28073900C64204 /* Info.plist */,
+				04832D441A28073900C64204 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04832D5B1A28073900C64204 /* bodhiWordTests */ = {
+			isa = PBXGroup;
+			children = (
+				04832D5E1A28073900C64204 /* bodhiWordTests.m */,
+				04832D5C1A28073900C64204 /* Supporting Files */,
+			);
+			path = bodhiWordTests;
+			sourceTree = "<group>";
+		};
+		04832D5C1A28073900C64204 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04832D5D1A28073900C64204 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04832D3E1A28073900C64204 /* bodhiWord */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04832D621A28073900C64204 /* Build configuration list for PBXNativeTarget "bodhiWord" */;
+			buildPhases = (
+				04832D3B1A28073900C64204 /* Sources */,
+				04832D3C1A28073900C64204 /* Frameworks */,
+				04832D3D1A28073900C64204 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = bodhiWord;
+			productName = bodhiWord;
+			productReference = 04832D3F1A28073900C64204 /* bodhiWord.app */;
+			productType = "com.apple.product-type.application";
+		};
+		04832D571A28073900C64204 /* bodhiWordTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04832D651A28073900C64204 /* Build configuration list for PBXNativeTarget "bodhiWordTests" */;
+			buildPhases = (
+				04832D541A28073900C64204 /* Sources */,
+				04832D551A28073900C64204 /* Frameworks */,
+				04832D561A28073900C64204 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04832D5A1A28073900C64204 /* PBXTargetDependency */,
+			);
+			name = bodhiWordTests;
+			productName = bodhiWordTests;
+			productReference = 04832D581A28073900C64204 /* bodhiWordTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04832D371A28073900C64204 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = apple;
+				TargetAttributes = {
+					04832D3E1A28073900C64204 = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					04832D571A28073900C64204 = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = 04832D3E1A28073900C64204;
+					};
+				};
+			};
+			buildConfigurationList = 04832D3A1A28073900C64204 /* Build configuration list for PBXProject "bodhiWord" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 04832D361A28073900C64204;
+			productRefGroup = 04832D401A28073900C64204 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04832D3E1A28073900C64204 /* bodhiWord */,
+				04832D571A28073900C64204 /* bodhiWordTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		04832D3D1A28073900C64204 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04832D4E1A28073900C64204 /* Main.storyboard in Resources */,
+				04832D531A28073900C64204 /* LaunchScreen.xib in Resources */,
+				04832D501A28073900C64204 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04832D561A28073900C64204 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04832D3B1A28073900C64204 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04832D4B1A28073900C64204 /* ViewController.m in Sources */,
+				04832D481A28073900C64204 /* AppDelegate.m in Sources */,
+				04832D451A28073900C64204 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04832D541A28073900C64204 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04832D5F1A28073900C64204 /* bodhiWordTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		04832D5A1A28073900C64204 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04832D3E1A28073900C64204 /* bodhiWord */;
+			targetProxy = 04832D591A28073900C64204 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		04832D4C1A28073900C64204 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04832D4D1A28073900C64204 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		04832D511A28073900C64204 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04832D521A28073900C64204 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		04832D601A28073900C64204 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		04832D611A28073900C64204 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		04832D631A28073900C64204 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = bodhiWord/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		04832D641A28073900C64204 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = bodhiWord/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		04832D661A28073900C64204 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = bodhiWordTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bodhiWord.app/bodhiWord";
+			};
+			name = Debug;
+		};
+		04832D671A28073900C64204 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = bodhiWordTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bodhiWord.app/bodhiWord";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04832D3A1A28073900C64204 /* Build configuration list for PBXProject "bodhiWord" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04832D601A28073900C64204 /* Debug */,
+				04832D611A28073900C64204 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04832D621A28073900C64204 /* Build configuration list for PBXNativeTarget "bodhiWord" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04832D631A28073900C64204 /* Debug */,
+				04832D641A28073900C64204 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		04832D651A28073900C64204 /* Build configuration list for PBXNativeTarget "bodhiWordTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04832D661A28073900C64204 /* Debug */,
+				04832D671A28073900C64204 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04832D371A28073900C64204 /* Project object */;
+}
