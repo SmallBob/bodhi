@@ -12,8 +12,15 @@
 #import "UserInfo.h"
 #import "playUserInfo.h"
 #import "SecondViewController.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "MBProgressHUD.h"
+#import <unistd.h>
+
+
+
 #import "ViewController.h"
-@interface SecondViewController ()
+@interface SecondViewController ()<MBProgressHUDDelegate>
 @property(nonatomic,strong)UIScrollView*firstSV;
 @property(nonatomic,strong)UIView*changeView;
 @property(nonatomic,strong)UIView*viewFirst;
@@ -33,7 +40,7 @@
 
 @property(nonatomic)float length;
 
-
+@property(nonatomic,strong)MBProgressHUD*HUD;
 
 @end
 
@@ -42,56 +49,81 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
+    
     [self creatBackBtn];
     
-
-//    [[JsonPostModel shareJsonPostModel] requestPlayViewSegmentRightView:^(id obj) {
-//        self.rightSegmentAry =obj;
-//    }];
+    
+    self.HUD = [[MBProgressHUD alloc]initWithView:self.view];
+    
+    [self.tabBarController.view addSubview:self.HUD];
+    
+    [self.view bringSubviewToFront:self.HUD];
+    //self.HUD.delegate=self;
+    self.HUD.labelText =@"loading";
     
     
-    
+    [self.HUD showAnimated:YES whileExecutingBlock:^{
         
-    
-    [[JsonPostModel shareJsonPostModel] requestPlayViewData:^(id obj) {
-        self.ary = obj;
+        [[JsonPostModel shareJsonPostModel] requestPlayViewData:^(id obj) {
+            self.ary = obj;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                
+                
+                [self changedLeftView];
+                
+                
+                
+                self.viewRight.hidden= YES;
+                
+                UIImage*image1=[UIImage imageNamed:@"leftRight.png"] ;
+                UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:@[@"",@""]];
+                [segmentedControl addTarget:self action:@selector(changedSegment:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                
+                segmentedControl.frame = CGRectMake(0, 95, self.view.frame.size.width, 30);
+                
+                [segmentedControl setBackgroundImage:image1 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+                [self.view addSubview:segmentedControl];
+                
+                
+                
+            });
+            
+            
+        }];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-           
-            
-            
-            [self changedLeftView];
-            
-            
-            
-            self.viewRight.hidden= YES;
-
-            UIImage*image1=[UIImage imageNamed:@"leftRight.png"] ;
-            UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:@[@"",@""]];
-            [segmentedControl addTarget:self action:@selector(changedSegment:) forControlEvents:UIControlEventValueChanged];
-            
-            segmentedControl.selectedSegmentIndex = 0;
-            
-            
-            segmentedControl.frame = CGRectMake(0, 95, self.view.frame.size.width, 30);
-            
-            [segmentedControl setBackgroundImage:image1 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-            [self.view addSubview:segmentedControl];
-            
-
-            
-        });
-        
+      [self myTask];
+    } completionBlock:^{
+        [self.HUD removeFromSuperview];
         
     }];
     
-    
-    
-    
-    
-    
+  
     
  }
+
+
+-(void)myTask
+{
+    
+    
+    
+    sleep(1);
+
+
+    
+}
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [self.HUD removeFromSuperview];
+    
+    self.HUD = nil;
+}
 
 
 -(void)viewWillAppear:(BOOL)animated
@@ -206,9 +238,18 @@
                // self.ary[i]   peopleAll.png
                 playUserInfo*userInfo = self.ary[i];
                 
-
-                [btn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl]]] forState:UIControlStateNormal];
                 
+                
+                
+                [btn sd_setImageWithURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl] forState:UIControlStateNormal];
+
+//                [btn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl]]] forState:UIControlStateNormal];
+                
+                
+                
+                
+                
+               
                 
                 [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
                 

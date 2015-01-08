@@ -11,6 +11,7 @@
 #import "ViewController.h"
 #import "SecondViewController.h"
 #import "UserInfo.h"
+#import "UIImageView+WebCache.h"
 
 #import "JsonPostModel.h"
 
@@ -56,10 +57,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (!self.ary) {
-        self.ary  = [NSMutableArray array];
+    self.ary  = [NSMutableArray array];
         
-    }
     
     [[JsonPostModel shareJsonPostModel]  requestMainviewRoleImage:^(id obj) {
         self.ary = obj;
@@ -98,6 +97,7 @@
     self.firstView=[[UIView alloc]initWithFrame:CGRectMake(0, 24,  viewWidth,80)];
    
     UIButton*loginBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
+
     
      [loginBtn setImage:[UIImage imageNamed:@"loginBtn.png"] forState:UIControlStateNormal];
     
@@ -196,11 +196,12 @@
         
         
         self.iv=[[UIImageView alloc]initWithFrame:CGRectMake(i*m, 0, m, self.fourSV.frame.size.height)];
-        self.iv.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.iconUrl]]];
+        
+        [self.iv sd_setImageWithURL:[NSURL URLWithString:userInfo.iconUrl]];
         
         
+//        self.iv.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.iconUrl]]];
         
-        //[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:roleImage.iconUrl]]];
         
         [self.fourSV  addSubview:self.iv];
                
