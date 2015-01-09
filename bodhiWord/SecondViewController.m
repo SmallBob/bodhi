@@ -20,7 +20,7 @@
 
 
 #import "ViewController.h"
-@interface SecondViewController ()<MBProgressHUDDelegate>
+@interface SecondViewController ()
 @property(nonatomic,strong)UIScrollView*firstSV;
 @property(nonatomic,strong)UIView*changeView;
 @property(nonatomic,strong)UIView*viewFirst;
@@ -36,11 +36,16 @@
 @property(nonatomic,strong)NSMutableArray*ary;
 @property(nonatomic,strong)NSMutableArray*rightSegmentAry;
 
+@property(nonatomic,strong)UISegmentedControl *segmentedControl ;
+
 
 
 @property(nonatomic)float length;
 
 @property(nonatomic,strong)MBProgressHUD*HUD;
+
+@property(nonatomic)BOOL isBool;
+
 
 @end
 
@@ -50,45 +55,81 @@
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
     
+//    NSLog(@"didload:%d",self.view.subviews.count);
+    
+    
     [self creatBackBtn];
     
+    
+    
+ }
+
+
+-(void)UIUpdate
+{
+    [self changedLeftView];
+    
+    
+    
+    self.viewRight.hidden= YES;
+    
+    UIImage*image1=[UIImage imageNamed:@"leftRight.png"] ;
+    self.segmentedControl = [[UISegmentedControl alloc]initWithItems:@[@"",@""]];
+    [self.segmentedControl addTarget:self action:@selector(changedSegment:) forControlEvents:UIControlEventValueChanged];
+    
+    [self.segmentedControl setSelectedSegmentIndex:0];
+    
+    
+    self.segmentedControl.frame = CGRectMake(0, 95, self.view.frame.size.width, 30);
+    
+    [self.segmentedControl setBackgroundImage:image1 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.view addSubview:self.segmentedControl];
+
+    self.isBool = YES;
+}
+
+-(void)myTask
+{
+    
+    
+    
+    sleep(2);
+
+
+    
+}
+
+
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+   
+//        NSLog(@"will:%d",self.view.subviews.count);
     
     self.HUD = [[MBProgressHUD alloc]initWithView:self.view];
     
     [self.tabBarController.view addSubview:self.HUD];
     
     [self.view bringSubviewToFront:self.HUD];
-    //self.HUD.delegate=self;
+    
     self.HUD.labelText =@"loading";
-    
-    
+   
+     if (!self.isBool) {
     [self.HUD showAnimated:YES whileExecutingBlock:^{
+        
+        
         
         [[JsonPostModel shareJsonPostModel] requestPlayViewData:^(id obj) {
             self.ary = obj;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                
-                
-                [self changedLeftView];
-                
-                
-                
-                self.viewRight.hidden= YES;
-                
-                UIImage*image1=[UIImage imageNamed:@"leftRight.png"] ;
-                UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:@[@"",@""]];
-                [segmentedControl addTarget:self action:@selector(changedSegment:) forControlEvents:UIControlEventValueChanged];
-                
-                segmentedControl.selectedSegmentIndex = 0;
-                
-                
-                segmentedControl.frame = CGRectMake(0, 95, self.view.frame.size.width, 30);
-                
-                [segmentedControl setBackgroundImage:image1 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-                [self.view addSubview:segmentedControl];
-                
+               
+                    
+                    [self UIUpdate];
+                    
                 
                 
             });
@@ -96,42 +137,25 @@
             
         }];
         
-      [self myTask];
+            
+        
+        [self myTask];
+        
     } completionBlock:^{
         [self.HUD removeFromSuperview];
         
     }];
     
-  
     
- }
-
-
--(void)myTask
-{
-    
-    
-    
-    sleep(1);
-
-
+     }else{
+         self.firstSV.hidden = NO;
+         self.rightClickView.hidden = YES;
+         [self.segmentedControl setSelectedSegmentIndex:0];
+         
+     }
     
 }
 
--(void)hudWasHidden:(MBProgressHUD *)hud
-{
-    [self.HUD removeFromSuperview];
-    
-    self.HUD = nil;
-}
-
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-
-}
 
 
 //创建返回按钮
@@ -156,10 +180,7 @@
         [studyBtn addTarget:self action:@selector(goSecondView:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:studyBtn];
-        if (studyBtn.tag == 0 ) {
-            studyBtn.enabled = NO;
-        ;
-        }
+        
         
     }
 
@@ -179,6 +200,15 @@
 -(void)goSecondView:(UIButton*)btn
 {
     [self.tabBarController setSelectedIndex:btn.tag];
+//        NSLog(@"go:%d",self.view.subviews.count);
+    
+    if (btn.tag==0) {
+        
+        self.firstSV.hidden = NO;
+        self.rightClickView.hidden = YES;
+        [self.segmentedControl setSelectedSegmentIndex:0];
+        
+    }
 }
 
 
@@ -189,7 +219,6 @@
 
 -(void)changedLeftView;
 {
-    NSLog(@"%lu",(unsigned long)self.ary.count);
 
     
             self.viewFirst  =[[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
@@ -214,7 +243,6 @@
             
 #pragma people
             CGFloat peopleWidth = (self.view.frame.size.width-60)/2;
-            NSLog(@" ---- self.ary.count  %lu ",(unsigned long)self.ary.count);
     
             for (int i = 0; i<self.ary.count; i++) {
                 
@@ -336,7 +364,7 @@
 -(void)changedSegment :(UISegmentedControl*)sender
 {
 
-    NSLog(@"%ld",(long)sender.selectedSegmentIndex);
+//    NSLog(@"%ld",(long)sender.selectedSegmentIndex);
     switch (sender.selectedSegmentIndex) {
         case 0:
         {
@@ -660,7 +688,7 @@
 {
     self.rightClickView.hidden = YES;
     self.viewRight.hidden = NO;
-    NSLog(@"123");
+   
 
 
 }

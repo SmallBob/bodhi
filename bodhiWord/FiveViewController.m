@@ -87,7 +87,7 @@
 -(void)goSecondView:(UIButton*)sender
 {
     if (sender.tag == 3) {
-    NSLog(@"backMainView");
+    
     
         
     self.leftBtnRoleView.hidden = YES;
@@ -245,8 +245,6 @@
 -(void)changedSegment:(UISegmentedControl*)sender
 {
 
-    NSLog(@"UISegmentedControl");
-    
     
     switch (sender.selectedSegmentIndex) {
         case 0:
@@ -281,7 +279,6 @@
 
 -(void)roleBtn :(UIButton*)sender
 {
-    NSLog(@"%ld",(long)sender.tag);
     
     self.leftBtnRoleView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
     

@@ -77,7 +77,7 @@
         
         
         self.firstSV.hidden = NO;
-        NSLog(@"%lu",(unsigned long)self.view.subviews.count);
+//        NSLog(@"%lu",(unsigned long)self.view.subviews.count);
 
     }else {
     
@@ -249,7 +249,7 @@
     
     self.backView.hidden = YES;
     [self clickButtonToView:sender.tag];
-    NSLog(@"lookView  clickButton :%ld",(long)sender.tag);
+//    NSLog(@"lookView  clickButton :%ld",(long)sender.tag);
 
 
 

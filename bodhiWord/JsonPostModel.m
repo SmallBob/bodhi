@@ -33,7 +33,6 @@ static UIAlertView*waitAlertView;
     //role mainView scrolleView image
     NSString*path = [NSString stringWithFormat:@"%@/bodhiworld_home/AppController/%@",AddressIP,apiName];
     
-   NSLog(@"%@",path);
     NSURL*url = [NSURL URLWithString:path];
     NSMutableURLRequest*request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -132,7 +131,7 @@ static UIAlertView*waitAlertView;
         NSMutableArray*ary = [NSMutableArray array ];
         NSArray*app = [dic objectForKey:@"app"];
         if (![app isMemberOfClass:[NSNull class]]) {
-            NSLog(@"dic -%@   app-%@",dic,app);
+//            NSLog(@"dic -%@   app-%@",dic,app);
             
             for (NSDictionary*dicApp  in app) {
                 playUserInfo*pui = [[playUserInfo alloc]init];
