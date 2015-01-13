@@ -8,39 +8,89 @@
 
 #import "ThirdViewController.h"
 
+#import "JsonPostModel.h"
+#import "WatchTVListUserInfo.h"
+
 @interface ThirdViewController ()
 @property(nonatomic,strong)UIScrollView*firstSV;
-@property(nonatomic,strong)UIView*secondView;
-@property(nonatomic,strong)UIView*thirdView;
-@property(nonatomic,strong)UIView*fourView;
-@property(nonatomic,strong)UIView*fiveView;
+@property(nonatomic,strong)UIView*TVView;
+@property(nonatomic,strong)UIView*filmsView;
+@property(nonatomic,strong)UIView*videoView;
+@property(nonatomic,strong)UIView*bookView;
 
-@property(nonatomic,strong)UIView*backView;
+@property(nonatomic,strong)UIView*listsView;
+
+@property(nonatomic,strong)NSMutableArray*tvListAry;
+@property(nonatomic,strong)NSMutableArray*filmsListAry;
+@property(nonatomic,strong)NSMutableArray*videoListAry;
+@property(nonatomic,strong)NSMutableArray*bookListAry;
+
+
+@property(nonatomic,strong)JsonPostModel*jpm;
 @end
 
 @implementation ThirdViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-
     [self creatBackBtn];
     self.tabBarController.tabBar.hidden = YES;
     
     
+    
+    
     [self creatView];
-    [self.view addSubview:self.firstSV];
     
     
+    
+//[self JsonData];
+  
+   
+    
+}
 
-            // Do any additional setup after loading the view.
+
+
+-(void)JsonData
+{
+    self.jpm = [JsonPostModel shareJsonPostModel];
+    [self.jpm requestWatchViewTVList:^(id obj) {
+        self.tvListAry = obj;
+        
+    }];
+    
+    [self.jpm requestwatchviewFilmsList:^(id obj) {
+        self.filmsListAry = obj;
+    }];
     
     
-    }
+    [self.jpm requestwatchViewVideoList:^(id obj) {
+        
+    }];
+    
+    [self.jpm requestwatchViewebookList:^(id obj) {
+        
+    }];
+
+
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    
+    
+    
+ NSLog(@"viewwillappear::%d",self.view.subviews.count);
+}
 
 
 -(void)creatBackBtn
 {
+     NSLog(@"creatBack:%d",self.view.subviews.count);
     
     UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 80, 60)];
     [backBtn setImage:[UIImage imageNamed:@"screenTitle.png"] forState:UIControlStateNormal];
@@ -68,15 +118,18 @@
 -(void)goSecondView:(UIButton*)sender
 {
     if (sender.tag == 1) {
-        self.secondView.hidden = YES;
-        self.thirdView.hidden = YES;
-        self.fourView.hidden = YES;
-        self.fiveView.hidden = YES;
-        self.backView.hidden = YES;
+
+        [self.TVView removeFromSuperview];
+        [self.filmsView removeFromSuperview];
+        [self.videoView removeFromSuperview];
+        [self.bookView removeFromSuperview];
+        [self.firstSV removeFromSuperview];
+        [self.listsView removeFromSuperview];
+        
+        [self creatView];
         
         
-        
-        self.firstSV.hidden = NO;
+//        self.firstSV.hidden = NO;
 //        NSLog(@"%lu",(unsigned long)self.view.subviews.count);
 
     }else {
@@ -120,16 +173,9 @@
     imageView1.image = [UIImage imageNamed:@"001_watch_06mainpage_20141105_16.png"];
     
     [self.firstSV addSubview:imageView1];
-//
-//    
-//    UIImageView*fiveIVdown=[[UIImageView alloc]initWithFrame:CGRectMake(0,500,self.firstSV.frame.size.width,110)];
-//    fiveIVdown.image=[UIImage imageNamed:@"Bodhiword_.png"];
-//    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
-//    [fiveBtnLeft setImage:[UIImage imageNamed:@"Bodhiword_35.png"] forState:UIControlStateNormal];
-//    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
-//    [fiveBtnRight setImage:[UIImage imageNamed:@"Bodhiword_37.png"] forState:UIControlStateNormal];
-//        [fiveIVdown addSubview:fiveBtnLeft];
-//    [fiveIVdown addSubview:fiveBtnRight];
+
+    
+    
 
     
     
@@ -155,7 +201,7 @@
     [self.firstSV addSubview:fiveIVdown];
     
     [self.firstSV setContentSize:CGSizeMake(self.firstSV.frame.size.width, 540)];
-//[self.view addSubview:self.firstSV];
+    [self.view addSubview:self.firstSV];
 
 
 
@@ -173,10 +219,10 @@
 
 -(void)lists:(UIButton*)sender
 {
-    self.secondView.hidden = YES;
-    self.thirdView.hidden = YES;
-    self.fourView.hidden = YES;
-    self.fiveView.hidden = YES;
+    self.TVView.hidden = YES;
+    self.filmsView.hidden = YES;
+    self.videoView.hidden = YES;
+    self.bookView.hidden = YES;
     
     
     
@@ -185,12 +231,12 @@
     
     
     
-    self.backView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
+    self.listsView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
     
-    UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.backView.frame.size.width, self.backView.frame.size.height)];
+    UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.listsView.frame.size.width, self.listsView.frame.size.height)];
     imageView.image =[UIImage imageNamed:@"watch_05categories_20141105_bg"];
     
-    [self.backView addSubview:imageView];
+    [self.listsView addSubview:imageView];
     
     
     CGFloat width = self.view.frame.size.width/2;
@@ -208,8 +254,8 @@
         
         
         
-        [self.backView addSubview: btn];
-        
+        [self.listsView addSubview: btn];
+        NSLog(@"lists:%d",self.view.subviews.count);
         
     }
     
@@ -230,7 +276,7 @@
     
     
     
-    [self.view addSubview:self.backView];
+    [self.view addSubview:self.listsView];
     
     
     
@@ -241,17 +287,9 @@
 
 -(void)lookView:(UIButton*)sender
 {
-    
-    
-    
-    
-    
-    
-    self.backView.hidden = YES;
+   
+    self.listsView.hidden = YES;
     [self clickButtonToView:sender.tag];
-//    NSLog(@"lookView  clickButton :%ld",(long)sender.tag);
-
-
 
 
 }
@@ -274,7 +312,7 @@
         case 0:
         {
             
-            self.secondView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
+            self.TVView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
             
             UIView*view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
             
@@ -296,12 +334,12 @@
             
             
             
-            UIScrollView*secondSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.secondView.frame.size.width, self.secondView.frame.size.height - 110)];
+            UIScrollView*secondSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.TVView.frame.size.width, self.TVView.frame.size.height - 110)];
             secondSV.bounces= NO;
             secondSV.showsHorizontalScrollIndicator = NO;
             
             for (int i = 0; i<4; i++) {
-                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.secondView.frame.size.width, 120)];
+                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.TVView.frame.size.width, 120)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 150, 80)];
                 
@@ -315,12 +353,12 @@
                 
                 [view addSubview:iv1];
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.secondView.frame.size.width-80, 75, 25, 25)];
+                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.TVView.frame.size.width-80, 75, 25, 25)];
                 iv2.image = [UIImage imageNamed:@"002_watch_01tv_20141105_29"];
                 
                 [view addSubview:iv2];
                 
-                UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.secondView.frame.size.width-45, 75, 25, 25)];
+                UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.TVView.frame.size.width-45, 75, 25, 25)];
                 [btn1 setImage:[UIImage imageNamed:@"002_watch_01tv_20141105_26"] forState:UIControlStateNormal];
                 
                 [btn1 addTarget:self action:@selector(playVedio:) forControlEvents:UIControlEventTouchUpInside];
@@ -339,12 +377,12 @@
             
             
             
-            [self.secondView addSubview:secondSV];
+            [self.TVView addSubview:secondSV];
             
 
             
             
-            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.secondView.frame.size.height-80,self.secondView.frame.size.width,80)];
+            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.TVView.frame.size.height-80,self.TVView.frame.size.width,80)];
             UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
             oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
             [fiveIVdown addSubview:oneIV];
@@ -366,12 +404,17 @@
             
             
             
-            [self.secondView addSubview:fiveIVdown];
+            [self.TVView addSubview:fiveIVdown];
             
             
             
-            [self.secondView addSubview:view];
-            [self.view addSubview:self.secondView];
+            [self.TVView addSubview:view];
+            
+            
+            
+           [self.view addSubview:self.TVView];
+
+            
             
             
             
@@ -382,7 +425,7 @@
             
         {
             
-            self.thirdView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
+            self.filmsView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
             
             UIView*view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
             
@@ -393,15 +436,15 @@
             [btn addTarget:self action:@selector(lists:) forControlEvents:UIControlEventTouchUpInside];
             
             [view addSubview:btn];
-            [self.thirdView addSubview:view];
+            [self.filmsView addSubview:view];
             
             
-            UIScrollView*thirdSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.thirdView.frame.size.width, self.thirdView.frame.size.height - 30)];
+            UIScrollView*thirdSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.filmsView.frame.size.width, self.filmsView.frame.size.height - 30)];
             thirdSV.bounces= NO;
             thirdSV.showsHorizontalScrollIndicator = NO;
             
             for (int i = 0; i<8; i++) {
-                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.thirdView.frame.size.width, 120)];
+                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.filmsView.frame.size.width, 120)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 80, 80)];
                 
@@ -416,7 +459,7 @@
                 [view addSubview:iv1];
                 
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.thirdView.frame.size.width-40, 75, 25, 25)];
+                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.filmsView.frame.size.width-40, 75, 25, 25)];
                 iv2.image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_10.png"];
                 
                 [view addSubview:iv2];
@@ -456,9 +499,9 @@
             
             [thirdSV setContentSize:CGSizeMake(thirdSV.frame.size.width, 8*120+80)];
             
-            [self.thirdView addSubview:thirdSV];
+            [self.filmsView addSubview:thirdSV];
             
-            [self.view addSubview:self.thirdView];
+            [self.view addSubview:self.filmsView];
             
             
             
@@ -471,7 +514,7 @@
             
             
             
-            self.fourView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
+            self.videoView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
             
             UIView*view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
             
@@ -482,17 +525,17 @@
             [btn addTarget:self action:@selector(lists:) forControlEvents:UIControlEventTouchUpInside];
             
             [view addSubview:btn];
-            [self.fourView addSubview:view];
+            [self.videoView addSubview:view];
             
             
-            UIScrollView*fourSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.fourView.frame.size.width, self.fourView.frame.size.height - 30)];
+            UIScrollView*fourSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.videoView.frame.size.width, self.videoView.frame.size.height - 30)];
             fourSV.bounces= NO;
             fourSV.showsHorizontalScrollIndicator = NO;
             
             for (int i = 0; i<4; i++) {
                 
                 
-                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.fourView.frame.size.width, 120)];
+                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.videoView.frame.size.width, 120)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 150, 80)];
                 
@@ -506,12 +549,12 @@
                 
                 [view addSubview:iv1];
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.fourView.frame.size.width-80, 75, 25, 25)];
+                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.videoView.frame.size.width-80, 75, 25, 25)];
                 iv2.image = [UIImage imageNamed:@"005_watch_03mv_20141105_14"];
                 
                 [view addSubview:iv2];
                 
-                UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.fourView.frame.size.width-45, 75, 25, 25)];
+                UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.videoView.frame.size.width-45, 75, 25, 25)];
                 [btn1 setImage:[UIImage imageNamed:@"005_watch_03mv_20141105_11"] forState:UIControlStateNormal];
                 
                 // [btn1 addTarget:self action:@selector(playVedio:) forControlEvents:UIControlEventTouchUpInside];
@@ -555,9 +598,9 @@
             
             [fourSV setContentSize:CGSizeMake(fourSV.frame.size.width, 4*120+80)];
             
-            [self.fourView addSubview:fourSV];
+            [self.videoView addSubview:fourSV];
             
-            [self.view addSubview:self.fourView];
+            [self.view addSubview:self.videoView];
             
             
             
@@ -566,7 +609,7 @@
             
         case 3:
         {
-            self.fiveView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
+            self.bookView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
             
             UIView*view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
             
@@ -577,9 +620,9 @@
             [btn addTarget:self action:@selector(lists:) forControlEvents:UIControlEventTouchUpInside];
             
             [view addSubview:btn];
-            [self.fiveView addSubview:view];
+            [self.bookView addSubview:view];
             
-            UIScrollView*fiveSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.fiveView.frame.size.width, self.fiveView.frame.size.height - 30)];
+            UIScrollView*fiveSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.bookView.frame.size.width, self.bookView.frame.size.height - 30)];
             fiveSV.bounces= NO;
             fiveSV.showsHorizontalScrollIndicator = NO;
             
@@ -594,7 +637,7 @@
             for (int i = 0; i<12; i++) {
                 
                 
-                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 50+i*100, self.fiveView.frame.size.width, 100)];
+                UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 50+i*100, self.bookView.frame.size.width, 100)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 70, 70)];
                 
@@ -608,7 +651,7 @@
                 
                 [view addSubview:iv1];
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.fiveView.frame.size.width-115, 30, 100, 30)];
+                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.bookView.frame.size.width-115, 30, 100, 30)];
                 iv2.image = [UIImage imageNamed:@"006_watch_05eComics_20141105_10"];
                 
                 [view addSubview:iv2];
@@ -650,9 +693,9 @@
             
             
             
-            [self.fiveView addSubview:fiveSV];
+            [self.bookView addSubview:fiveSV];
             
-            [self.view addSubview:self.fiveView];
+            [self.view addSubview:self.bookView];
             
             
             
@@ -676,7 +719,7 @@
 
 
 
-
+ NSLog(@"btn::%d",self.view.subviews.count);
 
 
 }

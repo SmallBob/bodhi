@@ -47,6 +47,8 @@
 
 @property(nonatomic,strong)UIImage*image;
 
+@property(nonatomic,strong)UserInfo*userInfo;
+
 
 @end
 
@@ -61,7 +63,36 @@
         
     
     [[JsonPostModel shareJsonPostModel]  requestMainviewRoleImage:^(id obj) {
-        self.ary = obj;
+        NSArray*resultAry = obj;
+#pragma 解析
+        if (![self.ary isMemberOfClass:[NSNull class]]) {
+            
+            for (NSDictionary*dicResult in resultAry) {
+                
+                self.userInfo = [[UserInfo alloc]init];
+                self.userInfo.iconUrl = [dicResult objectForKey:@"iconUrl" ];
+                self.userInfo.androidLink = [dicResult objectForKey:@"androidLink"];
+                self.userInfo.advId = [dicResult objectForKey:@"id"];
+                self.userInfo.imgSize = [dicResult objectForKey:@"imgSize"];
+                self.userInfo.imgType = [dicResult objectForKey:@"imgType"];
+                self.userInfo.iosLink = [dicResult objectForKey:@"iosLink"];
+                self.userInfo.adressIP = [dicResult objectForKey:@"ip"];
+                self.userInfo.isnew =[dicResult objectForKey:@"isnew"];
+                self.userInfo.language = [dicResult objectForKey:@"language"];
+                self.userInfo.name = [dicResult objectForKey:@"name"];
+                self.userInfo.postion = [dicResult objectForKey:@"postion"];
+                self.userInfo.sorting = [dicResult objectForKey:@"sorting"];
+                self.userInfo.webLink = [dicResult objectForKey:@"webLink"];
+                
+                
+                [self.ary addObject:self.userInfo];
+                
+            }
+            
+        }else{
+            NSLog(@"adv  json == nil");
+            
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -190,7 +221,7 @@
     
     for (int i=0; i<self.ary.count; i++) {
         
-        UserInfo*userInfo = self.ary[i];
+       UserInfo*userInfo = self.ary[i];
         
         
         
@@ -410,7 +441,6 @@
     [loginViewBtn addTarget:self action:@selector(loginViewBtn:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.loginView addSubview:loginViewBtn];
-    
     
     [self.mainSV addSubview:self.loginView];
     

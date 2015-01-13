@@ -9,18 +9,20 @@
 
 
 #import "JsonPostModel.h"
-#import "UserInfo.h"
+
 #import "playUserInfo.h"
 #import "SecondViewController.h"
+
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"
-#import "MBProgressHUD.h"
-#import <unistd.h>
+
 
 
 
 #import "ViewController.h"
 @interface SecondViewController ()
+
+
 @property(nonatomic,strong)UIScrollView*firstSV;
 @property(nonatomic,strong)UIView*changeView;
 @property(nonatomic,strong)UIView*viewFirst;
@@ -37,14 +39,10 @@
 @property(nonatomic,strong)NSMutableArray*rightSegmentAry;
 
 @property(nonatomic,strong)UISegmentedControl *segmentedControl ;
-
-
+@property(nonatomic,strong)JsonPostModel*jpm;
 
 @property(nonatomic)float length;
 
-@property(nonatomic,strong)MBProgressHUD*HUD;
-
-@property(nonatomic)BOOL isBool;
 
 
 @end
@@ -54,12 +52,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
-    
-//    NSLog(@"didload:%d",self.view.subviews.count);
-    
-    
-    [self creatBackBtn];
-    
+
     
     
  }
@@ -67,9 +60,7 @@
 
 -(void)UIUpdate
 {
-    [self changedLeftView];
-    
-    
+    [self creatLeftView];
     
     self.viewRight.hidden= YES;
     
@@ -85,75 +76,67 @@
     [self.segmentedControl setBackgroundImage:image1 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.view addSubview:self.segmentedControl];
 
-    self.isBool = YES;
 }
-
--(void)myTask
-{
-    
-    
-    
-    sleep(2);
-
-
-    
-}
-
 
 
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-   
-//        NSLog(@"will:%d",self.view.subviews.count);
     
-    self.HUD = [[MBProgressHUD alloc]initWithView:self.view];
     
-    [self.tabBarController.view addSubview:self.HUD];
-    
-    [self.view bringSubviewToFront:self.HUD];
-    
-    self.HUD.labelText =@"loading";
-   
-     if (!self.isBool) {
-    [self.HUD showAnimated:YES whileExecutingBlock:^{
+    if (!self.jpm) {
+        
+        self.jpm = [JsonPostModel shareJsonPostModel];
+        self.ary = [NSMutableArray array];
         
         
+//  添加主界面点击按钮
+    [self creatBackBtn];
+  
         
-        [[JsonPostModel shareJsonPostModel] requestPlayViewData:^(id obj) {
-            self.ary = obj;
+//界面显示时 点击刷新重载数据
+    [self.jpm requestPlayViewData:^(id obj) {
+
+        NSArray*appAry = obj;
+        NSLog(@"appAry = %d",appAry.count);
+        
+        if (![appAry isMemberOfClass:[NSNull class]]) {
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            for (NSDictionary*dicApp  in appAry) {
+                playUserInfo*pui = [[playUserInfo alloc]init];
+                pui.playLeftViewIconUrl = [dicApp objectForKey:@"iconUrl"];
+                pui.leftSegmenttitle = [dicApp objectForKey:@"title"];
+                pui.leftSegmenttype = [dicApp objectForKey:@"type"];
                 
-               
-                    
-                    [self UIUpdate];
-                    
-                
-                
-            });
+                [self.ary addObject:pui];
+                           }
             
-            
-        }];
+        }
         
-            
         
-        [self myTask];
-        
-    } completionBlock:^{
-        [self.HUD removeFromSuperview];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+           
+           [self UIUpdate];
+        });
     }];
-    
-    
-     }else{
-         self.firstSV.hidden = NO;
-         self.rightClickView.hidden = YES;
-         [self.segmentedControl setSelectedSegmentIndex:0];
-         
-     }
-    
+    }else {
+        if (!self.viewFirst) {
+
+            [self UIUpdate];
+            
+        }else {
+            
+
+        [self.segmentedControl setSelectedSegmentIndex:0];
+        [self changedSegment:self.segmentedControl];
+            
+            
+        }
+
+        
+    }
+
 }
 
 
@@ -186,6 +169,8 @@
 
 
 }
+
+//返回主界面方法
 -(void)backMainView:(UIButton*)sender
 {
     
@@ -200,13 +185,45 @@
 -(void)goSecondView:(UIButton*)btn
 {
     [self.tabBarController setSelectedIndex:btn.tag];
-//        NSLog(@"go:%d",self.view.subviews.count);
     
     if (btn.tag==0) {
         
-        self.firstSV.hidden = NO;
-        self.rightClickView.hidden = YES;
-        [self.segmentedControl setSelectedSegmentIndex:0];
+      // 在当前界面 点击 当前显示界面按钮  就行界面刷新
+        [self.viewFirst removeFromSuperview];
+        [self.segmentedControl removeFromSuperview];
+        
+
+//      清除图片缓存
+        
+//        [[SDImageCache sharedImageCache] cleanDisk];
+//       [[SDImageCache sharedImageCache] clearDisk];
+//       [[SDImageCache sharedImageCache] clearMemory];
+        NSLog(@"%@",NSHomeDirectory());
+        
+        [self.jpm requestPlayViewData:^(id obj) {
+            NSArray*appAry = obj;
+            self.ary = [NSMutableArray array];
+            
+            if (![appAry isMemberOfClass:[NSNull class]]) {
+                
+                for (NSDictionary*dicApp  in appAry) {
+                    playUserInfo*pui = [[playUserInfo alloc]init];
+                    pui.playLeftViewIconUrl = [dicApp objectForKey:@"iconUrl"];
+                    pui.leftSegmenttitle = [dicApp objectForKey:@"title"];
+                    pui.leftSegmenttype = [dicApp objectForKey:@"type"];
+                    
+                    [self.ary addObject:pui];
+                                   }
+                
+            }
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [self UIUpdate];
+            });
+        }];
+
         
     }
 }
@@ -214,10 +231,7 @@
 
 
 
-
-
-
--(void)changedLeftView;
+-(void)creatLeftView;
 {
 
     
@@ -251,10 +265,6 @@
                                                                    peopleWidth,
                                                                    140)];
                 
-               // UIButton*btn = [[UIButton alloc]initWithFrame:CGRectMake(20+i%2*(peopleWidth+20),
-//                                                                         190+i/2*150,
-//                                                                         peopleWidth,
-//                                                                         140)];
                 
                                UIButton*btn=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height-30)];
                 
@@ -265,19 +275,12 @@
                 
                // self.ary[i]   peopleAll.png
                 playUserInfo*userInfo = self.ary[i];
-                
-                
+            
+              
                 
                 
                 [btn sd_setImageWithURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl] forState:UIControlStateNormal];
 
-//                [btn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl]]] forState:UIControlStateNormal];
-                
-                
-                
-                
-                
-               
                 
                 [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
                 
@@ -364,7 +367,7 @@
 -(void)changedSegment :(UISegmentedControl*)sender
 {
 
-//    NSLog(@"%ld",(long)sender.selectedSegmentIndex);
+
     switch (sender.selectedSegmentIndex) {
         case 0:
         {
