@@ -9,4 +9,10 @@ play界面 完成
 图片缓存 sdwebimage 框架
 刷新功能
 
+1.03-2015.01.13
+play watch 界面 
+主界面 跳转 
+learn 
+watch 视频问题
+creat 不确定性
 

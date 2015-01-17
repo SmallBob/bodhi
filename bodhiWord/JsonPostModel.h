@@ -21,7 +21,11 @@ typedef void(^CallBack) (id obj);
 
 
 -(void)requestPlayViewData:(CallBack)callBack;
+-(void)requestPlayViewedAppDetailWithParams:(NSString*)params and:(CallBack)callBack;
+
 -(void)requestPlayViewSegmentRightView:(CallBack)callBack;
+-(void)requestPlayViewSocialWithParams:(NSString*)params andCallBack:(CallBack)callBack;
+
 -(void)requestWatchViewTVList:(CallBack)callBack;
 -(void)requestwatchviewFilmsList:(CallBack)callBack;
 -(void)requestwatchViewVideoList:(CallBack)callBack;

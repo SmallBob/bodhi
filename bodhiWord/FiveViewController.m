@@ -70,7 +70,7 @@
         
         studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(90+i*(btnWidth+5), 34, btnWidth, 55)];
         studyBtn.tag=i;
-        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"btn0%d.png",(i+1)]] forState:UIControlStateNormal];
+        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play_0%d.png",i]] forState:UIControlStateNormal];
         [studyBtn addTarget:self action:@selector(goSecondView:) forControlEvents:UIControlEventTouchUpInside];
         
         
@@ -284,10 +284,6 @@
     
     
 
-//    
-//       switch (sender.tag) {
-//        case 0:
-//        {
             self.leftView.hidden = YES;
             
             
@@ -306,33 +302,27 @@
             [self.leftBtnRoleView addSubview:btn];
             
             
+    
+            UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(2, 32, self.view.frame.size.width-4, self.view.bounds.size.height-200)];
+            imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"750wallpaper_0%d.jpg",sender.tag+1]];
             
-            UIScrollView*sv = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.leftBtnRoleView.frame.size.width, self.leftBtnRoleView.frame.size.height-30)];
-            sv.bounces= NO;
-            sv.showsHorizontalScrollIndicator = YES;
+            [self.leftBtnRoleView addSubview:imageView];
             
-
-            
-            UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-            imageView.image = [UIImage imageNamed:@"create_02getwallpaper_20141105_05"];
-            
-            [sv addSubview:imageView];
-            
-            UIButton*btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80,self.view.frame.size.height+10, 160, 40)];
+            UIButton*btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80,self.view.frame.size.height-165, 160, 40)];
         
             [btn1 setImage:[UIImage imageNamed:@"create_02getwallpaper_20141105_08"] forState:UIControlStateNormal];
 #pragma get this wallPaper
             
+    [btn1 addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
             
             
             
-            
-            [sv addSubview:btn1];
-            
+            [self.leftBtnRoleView addSubview:btn1];
+    
             
             
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height+10 +50,sv.frame.size.width,80)];
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-120,self.view.frame.size.width,20)];
     
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
@@ -342,55 +332,18 @@
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 20)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
-    
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 20)];
+    fiveIVdown.backgroundColor = [UIColor redColor];
     
     [oneIV addSubview:fiveBtnLeft];
     
     [oneIV addSubview:fiveBtnRight];
     
-
-    
-    
-    
-    
-    
-    
-    
-            
-            [sv addSubview:fiveIVdown];
-            
-            [sv setContentSize:CGSizeMake(sv.frame.size.width, self.view.frame.size.height + 60+80)];
-            
-            
-    
-    
-    
-    
-    
-            [self.leftBtnRoleView addSubview:sv];
-        
-        
-//        }
-//            break;
-//            
-//         case 1:
-//        {
-//            
-//            
-//            
-//        }
-//            break;
-//            
-//            
-//            
-//        default:
-//            break;
-//    }
-    
+    [self.leftBtnRoleView addSubview: fiveIVdown];
+ 
     [self.view addSubview:self.leftBtnRoleView];
     
     
@@ -398,6 +351,13 @@
 }
 
 
+
+-(void)click:(UIButton*)sender
+{
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"loading..." delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+    [av show];
+
+}
 
 
 -(void)backLeftView:(UIButton*)sender

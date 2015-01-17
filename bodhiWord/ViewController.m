@@ -12,6 +12,9 @@
 #import "SecondViewController.h"
 #import "UserInfo.h"
 #import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "RoleViewController.h"
+#import "AppDelegate.h"
 
 #import "JsonPostModel.h"
 
@@ -25,7 +28,8 @@
 @property(nonatomic,strong)UIView*fourView;
 @property(nonatomic,strong)UIScrollView*fourSV;
 @property(nonatomic,strong)UIPageControl*pageCtrl;
-@property(nonatomic,strong)UIImageView*iv;
+
+@property(nonatomic,strong)UIButton*scrollRoleBtn;
 
 
 
@@ -137,7 +141,7 @@
     
    self.friendBtn=[[UIButton alloc]initWithFrame:CGRectMake(viewWidth-70, 10, 60, 60)];
      
-    [self.friendBtn setImage:[UIImage imageNamed:@"newFriendBtn.png"] forState:UIControlStateNormal];
+    [self.friendBtn setImage:[UIImage imageNamed:@"joinNow.png"] forState:UIControlStateNormal];
     
    // [ self.friendBtn addTarget:self action:@selector(newFriendBtnView:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -157,12 +161,13 @@
     
 //play watch learn create 按钮
     
-    for (int i = 0; i<4; i++) {
+    for (int i = 0; i<5; i++) {
         //左边 10  右边 5 间距 5
         CGFloat btnWidth= (viewWidth-10-5-20)/4;
         
-        UIButton*studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(10+i*(btnWidth+5), 10, btnWidth, 100)];
-        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"btn0%d.png",(i+1)]] forState:UIControlStateNormal];
+        
+        UIButton*studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(10+i*(btnWidth+5), 10, btnWidth, 80)];
+        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"btn0%d.png",i+1]] forState:UIControlStateNormal];
         
         studyBtn.tag=i;
         
@@ -171,6 +176,8 @@
         studyBtn.tag=i;//  为添加背景图片
         
         [self.secondView addSubview:studyBtn];
+        
+        
         
     }
     
@@ -226,21 +233,22 @@
         
         
         
-        self.iv=[[UIImageView alloc]initWithFrame:CGRectMake(i*m, 0, m, self.fourSV.frame.size.height)];
+        self.scrollRoleBtn=[[UIButton alloc]initWithFrame:CGRectMake(i*m, 0, m, self.fourSV.frame.size.height)];
         
-        [self.iv sd_setImageWithURL:[NSURL URLWithString:userInfo.iconUrl]];
+        self.scrollRoleBtn.tag = i;
+ 
+        [self.scrollRoleBtn sd_setImageWithURL:[NSURL URLWithString:userInfo.iconUrl] forState:UIControlStateNormal];
+        [self.scrollRoleBtn addTarget:self action:@selector(scrollRoleBtnToRole:) forControlEvents:UIControlEventTouchUpInside];
+
         
         
-//        self.iv.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.iconUrl]]];
-        
-        
-        [self.fourSV  addSubview:self.iv];
+        [self.fourSV  addSubview:self.scrollRoleBtn];
                
     }
 
     //NSInteger n = (self.ary.count%4 == 0)?(self.ary.count/4) : (self.ary.count/4+1);
     [self.fourSV  setContentSize:CGSizeMake(self.ary.count*m, self.fourSV.frame.size.height)];
-    [self.fourSV addSubview:self.iv];
+//    [self.fourSV addSubview:self.iv];
     
 #pragma pageControl
 /*
@@ -342,6 +350,19 @@
     
     // Do any additional setup after loading the view, typically from a nib.
 }
+
+#pragma scrollRoleBtnToRole
+-(void)scrollRoleBtnToRole:(UIButton*)sender
+{
+    NSLog(@"%ld",(long)sender.tag);
+    self.num = 4;
+    [self performSegueWithIdentifier:@"go" sender:nil];
+    ((AppDelegate*)[UIApplication sharedApplication].delegate).roleNum = sender.tag;
+}
+
+
+
+
 
 
 //登录 后页面 颜色渐变
@@ -480,7 +501,7 @@
     UITabBarController*tbc = segue.destinationViewController;
     [tbc setSelectedIndex:self.num];
     
-
+    
 }
 
 

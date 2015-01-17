@@ -12,8 +12,15 @@
 #import "playUserInfo.h"
 #import "WatchTVListUserInfo.h"
 #import "WatchFilmsListUserInfo.h"
+#import "WatchVideoListUserInfo.h"
+#import "WatchBookListUserInfo.h"
 
-#define AddressIP  @"http://122.225.196.222"
+#define AddressIP @"http://122.225.196.222"
+
+
+//@"http://192.168.1.108:8080"
+//@"http://122.225.196.222"
+
 static JsonPostModel*jsonP;
 static UIAlertView*waitAlertView;
 
@@ -35,9 +42,13 @@ static UIAlertView*waitAlertView;
 -(NSString*)currentLanguage
 {
     NSArray*languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+    NSLog(@"%@",languages);
     NSString*str =  [languages objectAtIndex:0];
-    if ([str isEqualToString:@"zh-Hans"]||[str isEqualToString:@"zh-Hant"]) {
-        return str;
+    
+    if ([str isEqualToString:@"zh-Hans"]) {
+        return @"zh_CN";
+    }else if([str isEqualToString:@"zh-Hant"]){
+        return @"zh_TW";
     }else
     {
         return @"en";
@@ -56,6 +67,8 @@ static UIAlertView*waitAlertView;
     //role mainView scrolleView image
     [self showWaitAlertView];
     NSString*path = [NSString stringWithFormat:@"%@/bodhiworld_home/AppController/%@",AddressIP,apiName];
+    NSLog(@"%@?%@",path,params);
+    
     
     NSURL*url = [NSURL URLWithString:path];
     NSMutableURLRequest*request = [NSMutableURLRequest requestWithURL:url];
@@ -66,6 +79,7 @@ static UIAlertView*waitAlertView;
     NSURLSessionDataTask*task =[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         
+        NSLog(@"%@",dic);
         callBack(dic);
         
         [self dismissWaitAlertView];
@@ -99,8 +113,12 @@ static UIAlertView*waitAlertView;
 
 -(void)requestMainviewRoleImage:(CallBack)callBack
 {
-    [self postByApiName:@"homeList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    NSString*allParams = [NSString stringWithFormat:@"locale=%@&imgType=WEB&imgSize=1920*1920",[self currentLanguage]];
+    
+    
+    [self postByApiName:@"homeList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
+        NSLog(@"%@",dic);
         
         NSArray*adv = [dic objectForKey:@"adv"];
         
@@ -119,15 +137,28 @@ static UIAlertView*waitAlertView;
 {
     [self postByApiName:@"edAppList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic  =obj;
-        
-        NSArray*app = [dic objectForKey:@"app"];
+    NSArray*app = [dic objectForKey:@"app"];
         
         callBack(app);
     }];
     
 
 }
-
+-(void)requestPlayViewedAppDetailWithParams:(NSString*)params and:(CallBack)callBack
+{
+    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&AppId=%@",params];
+    
+    
+    [self postByApiName:@"edAppDetail" andParams:allParams andCallBack:^(id obj) {
+        
+        NSDictionary*dic = obj;
+        
+        
+        callBack(dic);
+    }];
+    
+    
+}
 
 //Play  右视图界面加载
 -(void)requestPlayViewSegmentRightView:(CallBack)callBack
@@ -135,20 +166,10 @@ static UIAlertView*waitAlertView;
     [self postByApiName:@"socialList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
     
         NSDictionary*dic =obj;
-        NSMutableArray*ary =[NSMutableArray array];
         NSArray*socialAry= [dic objectForKey:@"social"];
-        if (![socialAry isMemberOfClass:[NSNull class]]) {
-            for (NSDictionary*dicRight in socialAry) {
-                playUserInfo*pui = [[playUserInfo alloc]init];
-                pui.rightSegmentDescribes = [dicRight objectForKey:@"describes"];
-                pui.rightSegmentIconUrl = [dicRight objectForKey:@"iconUrl"];
-                pui.rightSegmentTitile = [dicRight objectForKey:@"title"];
-                
-                [ary addObject:pui];
-            }
-        }
+
         
-        callBack(ary);
+        callBack(socialAry);
         
         
     }];
@@ -156,11 +177,51 @@ static UIAlertView*waitAlertView;
 
 }
 
+-(void)requestPlayViewSocialWithParams:(NSString*)params andCallBack:(CallBack)callBack
+{
+    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&AppId=%@",params];
+    
+    
+    [self postByApiName:@"socialDetail" andParams:allParams andCallBack:^(id obj) {
+        
+        NSDictionary*dic = obj;
+        
+        callBack(dic);
+    }];
+
+}
+
+
+
+/*
+{"tv":"http://beta.bodhiworld.com/bodhiworld/resources/tv/Chinese/WEB/1920*1920/906371b3-3b90-4b79-b99c-2cdb1c94dc55.png",
+    "book":"http://beta.bodhiworld.com/bodhiworld/resources/ebook/Chinese/WEB/1920*1920/19cf0d8d-7a99-4d9f-ab9c-93cbd9926f35.png",
+    "film":"http://beta.bodhiworld.com/bodhiworld/resources/films/Chinese/WEB/1920*1920/3e85e711-b28a-4956-ad2e-d9d62858c262.png",
+    "video":"http://beta.bodhiworld.com/bodhiworld/resources/Video/Chinese/WEB/1920*1920/5baaeba8-f765-4ccb-804c-a5a6de2f4d0d.png"}
+
+*/
+//watch main
+-(void)requestwatchMainViewWithCallBack:(CallBack)callBack
+{
+    [self postByApiName:@"" andParams:@"" andCallBack:^(id obj) {
+        
+        callBack(@"");
+    }];
+    
+    
+    
+}
+
+
+
+
+
 //Watch tvList
 -(void)requestWatchViewTVList:(CallBack)callBack
 {
     [self postByApiName:@"tvList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic = obj;
+        
         NSMutableArray*ary =[NSMutableArray array ];
         NSArray*tvAry = [dic objectForKeyedSubscript:@"tv"];
         
@@ -168,9 +229,9 @@ static UIAlertView*waitAlertView;
             for (NSDictionary*dicTV in tvAry) {
                 WatchTVListUserInfo*tvListUserInfo = [[WatchTVListUserInfo alloc]init];
                 tvListUserInfo.age = [dicTV objectForKey:@"age"];
-                tvListUserInfo.blues = (int)[dicTV objectForKey:@"blues"];
+                tvListUserInfo.blues = [dicTV objectForKey:@"blues"];
                 
-//               tvListUserInfo.describes = [dicTV objectForKey:@"describes"];
+               tvListUserInfo.describes = [dicTV objectForKey:@"describes"];
                 
                 tvListUserInfo.watchTVListID = [dicTV objectForKey:@"id"];
                 tvListUserInfo.imgSize = [dicTV objectForKey:@"imgSize"];
@@ -179,9 +240,9 @@ static UIAlertView*waitAlertView;
                 tvListUserInfo.addressIP = [dicTV objectForKey:@"ip"];
                 tvListUserInfo.language = [dicTV objectForKey:@"language"];
                 tvListUserInfo.love = [dicTV objectForKey:@"love"];
-                tvListUserInfo.sorting = (int)[dicTV objectForKey:@"sorting"];
+                tvListUserInfo.sorting = [dicTV objectForKey:@"sorting"];
                 tvListUserInfo.title = [dicTV objectForKey:@"title"];
-//                tvListUserInfo.watchTVVideoLink = [dicTV objectForKey:@"videoLink"];
+                tvListUserInfo.watchTVVideoLink = [dicTV objectForKey:@"videoLink"];
                 [ary addObject:tvListUserInfo];
             }
         }
@@ -195,11 +256,12 @@ static UIAlertView*waitAlertView;
 
 }
 
-
+//watch films
 -(void)requestwatchviewFilmsList:(CallBack)callBack
 {
     [self postByApiName:@"filmsList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic = obj;
+//        NSLog(@"%@",obj);
         NSMutableArray*ary =[NSMutableArray array ];
         NSArray*tvAry = [dic objectForKeyedSubscript:@"films"];
         
@@ -243,9 +305,38 @@ static UIAlertView*waitAlertView;
 {
     [self postByApiName:@"videoList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic = obj;
-        NSArray*videoAry = [dic objectForKey:@"video"];
         
-        callBack(videoAry);
+        NSArray*videoAry = [dic objectForKey:@"video"];
+        NSMutableArray*ary =[NSMutableArray array ];
+        
+        
+        if (![videoAry isMemberOfClass:[NSNull class]]) {
+            for (NSDictionary*dicVideo in videoAry) {
+                
+                WatchVideoListUserInfo *videoListUserInfo = [[WatchVideoListUserInfo alloc]init];
+                videoListUserInfo.age = [dicVideo objectForKey:@"age"];
+                if ([videoListUserInfo.age isEqualToString:@""]) {
+                    videoListUserInfo.age =@"未知";
+                }
+                videoListUserInfo.watchVideoID = [dicVideo objectForKey:@"id"];
+                videoListUserInfo.keywords = [dicVideo objectForKey:@"keywords"];
+                videoListUserInfo.imgSize = [dicVideo objectForKey:@"imgSize"];
+                videoListUserInfo.imgType = [dicVideo objectForKey:@"imgType"];
+                videoListUserInfo.imgUrl = [dicVideo objectForKey:@"imgUrl"];
+                videoListUserInfo.addressIP = [dicVideo objectForKey:@"ip"];
+                videoListUserInfo.language = [dicVideo objectForKey:@"language"];
+                videoListUserInfo.love = [dicVideo objectForKey:@"love"];
+                videoListUserInfo.name = [dicVideo objectForKey:@"name"];
+                videoListUserInfo.sorting = [dicVideo objectForKey:@"sorting"];
+                videoListUserInfo.title = [dicVideo objectForKey:@"title"];
+                videoListUserInfo.link = [dicVideo objectForKey:@"link"];
+
+                
+                [ary addObject:videoListUserInfo];
+            }
+        }
+        
+        callBack(ary);
         
     }];
     
@@ -256,9 +347,37 @@ static UIAlertView*waitAlertView;
 {
     [self postByApiName:@"ebookList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic = obj;
+        NSLog(@"%@",obj);
         NSArray*bookAry = [dic objectForKey:@"book"];
+        NSMutableArray*ary =[NSMutableArray array ];
         
-        callBack(bookAry);
+        
+        if (![bookAry isMemberOfClass:[NSNull class]]) {
+            for (NSDictionary*dicVideo in bookAry) {
+                
+                WatchBookListUserInfo *bookListUserInfo = [[WatchBookListUserInfo alloc]init];
+                bookListUserInfo.age = [dicVideo objectForKey:@"age"];
+                if ([bookListUserInfo.age isEqualToString:@""]) {
+                    bookListUserInfo.age =@"未知";
+                }
+                bookListUserInfo.watchBookID = [dicVideo objectForKey:@"id"];
+                bookListUserInfo.keywords = [dicVideo objectForKey:@"keywords"];
+                bookListUserInfo.imgSize = [dicVideo objectForKey:@"imgSize"];
+                bookListUserInfo.imgType = [dicVideo objectForKey:@"imgType"];
+                bookListUserInfo.imgUrl = [dicVideo objectForKey:@"imgUrl"];
+                bookListUserInfo.addressIP = [dicVideo objectForKey:@"ip"];
+                bookListUserInfo.language = [dicVideo objectForKey:@"language"];
+                bookListUserInfo.love = [dicVideo objectForKey:@"love"];
+                bookListUserInfo.name = [dicVideo objectForKey:@"name"];
+                bookListUserInfo.sorting = [dicVideo objectForKey:@"sorting"];
+                bookListUserInfo.title = [dicVideo objectForKey:@"title"];
+                bookListUserInfo.link = [dicVideo objectForKey:@"link"];
+                
+                
+                [ary addObject:bookListUserInfo];
+            }
+        }
+        callBack(ary);
         
     }];
     

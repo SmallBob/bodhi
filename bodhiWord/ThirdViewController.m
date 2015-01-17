@@ -8,8 +8,18 @@
 
 #import "ThirdViewController.h"
 
+#import "UIImageView+WebCache.h"
+
 #import "JsonPostModel.h"
 #import "WatchTVListUserInfo.h"
+#import <MediaPlayer/MediaPlayer.h>
+
+#import "WatchFilmsListUserInfo.h"
+#import "UIButton+WebCache.h"
+
+#import "WatchVideoListUserInfo.h"
+#import "WatchBookListUserInfo.h"
+
 
 @interface ThirdViewController ()
 @property(nonatomic,strong)UIScrollView*firstSV;
@@ -25,6 +35,9 @@
 @property(nonatomic,strong)NSMutableArray*videoListAry;
 @property(nonatomic,strong)NSMutableArray*bookListAry;
 
+@property(nonatomic,strong)UIWebView*webv;
+
+//@property(nonatomic,strong)MPMoviePlayerViewController*videoTV;
 
 @property(nonatomic,strong)JsonPostModel*jpm;
 @end
@@ -39,11 +52,8 @@
     
     
     
-    [self creatView];
-    
-    
-    
-//[self JsonData];
+//    [self creatView];
+//    [self JsonData];
   
    
     
@@ -54,6 +64,11 @@
 -(void)JsonData
 {
     self.jpm = [JsonPostModel shareJsonPostModel];
+    
+    self.tvListAry = [NSMutableArray array ];
+    self.filmsListAry = [NSMutableArray array ];
+    self.videoListAry = [NSMutableArray array ];
+    self.bookListAry = [NSMutableArray array];
     [self.jpm requestWatchViewTVList:^(id obj) {
         self.tvListAry = obj;
         
@@ -61,15 +76,16 @@
     
     [self.jpm requestwatchviewFilmsList:^(id obj) {
         self.filmsListAry = obj;
+//        NSLog(@"%d",self.filmsListAry.count);
     }];
     
     
     [self.jpm requestwatchViewVideoList:^(id obj) {
-        
+        self.videoListAry = obj;
     }];
     
     [self.jpm requestwatchViewebookList:^(id obj) {
-        
+        self.bookListAry = obj;
     }];
 
 
@@ -78,19 +94,38 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    
     [super viewWillAppear:animated];
+    if (!self.jpm) {
+        [self JsonData];
+        
+        
+//        加载主界面json之后 加载数据
+        [self creatView];
+    }else
+    {
+        if (!self.firstSV ) {
+            [self creatView];
+        }else
+        {
+            self.firstSV.hidden = NO;
+            self.TVView.hidden = YES;
+            self.filmsView.hidden = YES;
+            self.videoView.hidden = YES;
+            self.bookView.hidden =YES;
+            self.listsView.hidden = YES;
+            
+            
+        }
+    }
     
     
-    
-    
-    
- NSLog(@"viewwillappear::%d",self.view.subviews.count);
+
 }
 
 
 -(void)creatBackBtn
 {
-     NSLog(@"creatBack:%d",self.view.subviews.count);
     
     UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 80, 60)];
     [backBtn setImage:[UIImage imageNamed:@"screenTitle.png"] forState:UIControlStateNormal];
@@ -103,11 +138,9 @@
         
         studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(90+i*(btnWidth+5), 34, btnWidth, 55)];
         studyBtn.tag=i;
-        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"btn0%d.png",(i+1)]] forState:UIControlStateNormal];
+        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play_0%d.png",i]] forState:UIControlStateNormal];
         [studyBtn addTarget:self action:@selector(goSecondView:) forControlEvents:UIControlEventTouchUpInside];
         
-       
-
         [self.view addSubview:studyBtn];
         
         
@@ -126,11 +159,12 @@
         [self.firstSV removeFromSuperview];
         [self.listsView removeFromSuperview];
         
+        
+        [self JsonData];
         [self creatView];
         
         
-//        self.firstSV.hidden = NO;
-//        NSLog(@"%lu",(unsigned long)self.view.subviews.count);
+
 
     }else {
     
@@ -255,7 +289,7 @@
         
         
         [self.listsView addSubview: btn];
-        NSLog(@"lists:%d",self.view.subviews.count);
+       
         
     }
     
@@ -277,7 +311,7 @@
     
     
     [self.view addSubview:self.listsView];
-    
+
     
     
     
@@ -295,16 +329,6 @@
 }
 
 
-
--(void)playVedio:(UIButton*)sender
-{
-    NSLog(@"playVedio");
-    
-
-}
-
-
-
 -(void)clickButtonToView:(NSInteger)tag
 {
 
@@ -319,6 +343,7 @@
             
             UIButton*btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 30)];
             [btn setImage:[UIImage imageNamed:@"002_watch_01tv_20141105_02.png"] forState:UIControlStateNormal];
+            
             
             [btn addTarget:self action:@selector(lists:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -338,30 +363,63 @@
             secondSV.bounces= NO;
             secondSV.showsHorizontalScrollIndicator = NO;
             
-            for (int i = 0; i<4; i++) {
+            
+#pragma TV
+            
+            for (int i = 0; i<self.tvListAry.count; i++) {
+                WatchTVListUserInfo*tvUserInfo = self.tvListAry[i];
+                
                 UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.TVView.frame.size.width, 120)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 150, 80)];
                 
-                UIImage*image = [UIImage imageNamed:[NSString stringWithFormat:@"playOne%02d.png",i+1]];
-                iv.image = image;
+                [iv sd_setImageWithURL:[NSURL URLWithString:tvUserInfo.imgUrl]];
+                
+                
+//                UIImage*image = [UIImage imageNamed:[NSString stringWithFormat:@"playOne%02d.png",i+1]];
+//
+//                iv.image = image;
                 
                 [view addSubview:iv];
                 
-                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(180, 40, 100, 30)];
-                iv1.image = [UIImage imageNamed:@"002_watch_01tv_20141105_23"];
                 
-                [view addSubview:iv1];
+                UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(180, 40, 100, 30)];
+                label.text = [NSString stringWithFormat:@"%@.%@",tvUserInfo.blues,tvUserInfo.title];
+                label.font = [UIFont systemFontOfSize:12];
+                label.textColor = [UIColor redColor];
+                CGSize labelSize = {0,0};
+                labelSize = [label.text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(100,30) lineBreakMode: UILineBreakModeWordWrap];
+                label.numberOfLines = 3;
+                [view addSubview:label];
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.TVView.frame.size.width-80, 75, 25, 25)];
-                iv2.image = [UIImage imageNamed:@"002_watch_01tv_20141105_29"];
+//                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(180, 40, 100, 30)];
+//                
+//                
+//                iv1.image = [UIImage imageNamed:@"002_watch_01tv_20141105_23"];
+//                
+//                [view addSubview:iv1];
+                
+                
+#pragma 分享
+                UIButton*iv2 = [[UIButton alloc]initWithFrame:CGRectMake(self.TVView.frame.size.width-80, 75, 25, 25)];
+//                iv2.image = [UIImage imageNamed:@"002_watch_01tv_20141105_29"];
+                [iv2 setImage:[UIImage imageNamed:@"002_watch_01tv_20141105_29"] forState:UIControlStateNormal];
+                
+                iv2.tag = i;
+                
+                [iv2 addTarget:self action:@selector(tvShareVedio:) forControlEvents:UIControlEventTouchUpInside];
+                
                 
                 [view addSubview:iv2];
                 
+#pragma 播放
                 UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.TVView.frame.size.width-45, 75, 25, 25)];
                 [btn1 setImage:[UIImage imageNamed:@"002_watch_01tv_20141105_26"] forState:UIControlStateNormal];
                 
-                [btn1 addTarget:self action:@selector(playVedio:) forControlEvents:UIControlEventTouchUpInside];
+                btn1.tag = i;
+                
+                
+                [btn1 addTarget:self action:@selector(tvPlayVedio:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [view addSubview:btn1];
                 
@@ -372,7 +430,7 @@
                 
             }
             
-            [secondSV setContentSize:CGSizeMake(secondSV.frame.size.width, 4*120)];
+            [secondSV setContentSize:CGSizeMake(secondSV.frame.size.width, self.tvListAry.count*120)];
             
             
             
@@ -419,8 +477,9 @@
             
             
         }
-            
+         
             break;
+#pragma filmsView
         case 1:
             
         {
@@ -443,24 +502,54 @@
             thirdSV.bounces= NO;
             thirdSV.showsHorizontalScrollIndicator = NO;
             
-            for (int i = 0; i<8; i++) {
+            
+           NSLog(@"%lu",(unsigned long)self.filmsListAry.count);
+            
+            for (int i = 0; i<self.filmsListAry.count; i++) {
+                WatchFilmsListUserInfo*filmsUserInfo  = self.filmsListAry[i];
+                
                 UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.filmsView.frame.size.width, 120)];
                 
-                UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 80, 80)];
+                UIButton*roleBtn = [[UIButton alloc]initWithFrame:CGRectMake(15, 15, 80, 80)];
+                roleBtn.tag = i;
+//                [roleBtn sd_setImageWithURL:[NSURL URLWithString:filmsUserInfo.imgUrl]];
+                [roleBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:filmsUserInfo.imgUrl] forState:UIControlStateNormal];
+//                UIImage*image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_05"];
+//                iv.image = image;
+                [roleBtn addTarget:self action:@selector(roleVideoBtn:) forControlEvents:UIControlEventTouchUpInside];
                 
-                UIImage*image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_05"];
-                iv.image = image;
+                [view addSubview:roleBtn];
+//                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(95, 25, 120, 60)]
+               
                 
-                [view addSubview:iv];
+                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(95, 25, 80, 60)];
+                [iv1 sd_setImageWithURL:[NSURL URLWithString:filmsUserInfo.type]];
+//                iv1.image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_07.png"];
+//
+                if (i!=0) {
+                   [view addSubview:iv1];
+                }
                 
-                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(95, 25, 120, 60)];
-                iv1.image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_07.png"];
                 
-                [view addSubview:iv1];
+                UILabel*labelBodhi = [[UILabel alloc]initWithFrame:CGRectMake(175, 30, 60, 20)];
+                labelBodhi.text =@"Bodhi";
+                labelBodhi.font = [UIFont systemFontOfSize:10];
+                labelBodhi.textColor = [UIColor redColor];
+                
+                [view addSubview:labelBodhi];
+                
+                UILabel*labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(175, 50, 150, 30)];
+                labelTitle.text = filmsUserInfo.title;
+                labelTitle.font = [UIFont systemFontOfSize:8];
+                labelTitle.textColor = [UIColor redColor];
+                [view addSubview:labelTitle];
                 
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.filmsView.frame.size.width-40, 75, 25, 25)];
-                iv2.image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_10.png"];
+                UIButton*iv2 = [[UIButton alloc]initWithFrame:CGRectMake(self.filmsView.frame.size.width-40, 75, 25, 25)];
+                iv2.tag = i;
+//                iv2.image = [UIImage imageNamed:@"004_watch_04_microfilm_20141105_10.png"];
+                [iv2 setImage:[UIImage imageNamed:@"004_watch_04_microfilm_20141105_10.png"] forState:UIControlStateNormal];
+                [iv2 addTarget:self action:@selector(filmsShareVedio:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [view addSubview:iv2];
                 
@@ -474,7 +563,7 @@
             
             
             
-            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,8*120,thirdSV.frame.size.width,80)];
+            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.filmsListAry.count*120,thirdSV.frame.size.width,80)];
             UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
             oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
             [fiveIVdown addSubview:oneIV];
@@ -497,7 +586,9 @@
             [thirdSV addSubview:fiveIVdown];
             
             
-            [thirdSV setContentSize:CGSizeMake(thirdSV.frame.size.width, 8*120+80)];
+            [thirdSV setContentSize:CGSizeMake(thirdSV.frame.size.width, self.filmsListAry.count*120+80)];
+            
+            
             
             [self.filmsView addSubview:thirdSV];
             
@@ -532,32 +623,49 @@
             fourSV.bounces= NO;
             fourSV.showsHorizontalScrollIndicator = NO;
             
-            for (int i = 0; i<4; i++) {
-                
+            for (int i = 0; i<self.videoListAry.count; i++) {
+                WatchVideoListUserInfo*videoUserInfo =self.videoListAry[i];
                 
                 UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, i*120, self.videoView.frame.size.width, 120)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 150, 80)];
                 
-                UIImage*image = [UIImage imageNamed:@"005_watch_03mv_20141105_05"];
-                iv.image = image;
+                [iv sd_setImageWithURL:[NSURL URLWithString:videoUserInfo.imgUrl]];
+
+//                UIImage*image = [UIImage imageNamed:@"005_watch_03mv_20141105_05"];
+//                
+//                iv.image = image;
                 
                 [view addSubview:iv];
                 
-                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(180, 40, 100, 30)];
-                iv1.image = [UIImage imageNamed:@"005_watch_03mv_20141105_08"];
+//                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(180, 40, 100, 30)];
+//                iv1.image = [UIImage imageNamed:@"005_watch_03mv_20141105_08"];
+//                
+//                [view addSubview:iv1];
+
+                UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(180, 40, 140, 30)];
+                label.text = videoUserInfo.title;
+                label.font = [UIFont systemFontOfSize:16];
+                label.textColor = [UIColor redColor];
                 
-                [view addSubview:iv1];
+                [view addSubview:label];
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.videoView.frame.size.width-80, 75, 25, 25)];
-                iv2.image = [UIImage imageNamed:@"005_watch_03mv_20141105_14"];
                 
-                [view addSubview:iv2];
+                UIButton*shareBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.videoView.frame.size.width-80, 75, 25, 25)];
+                shareBtn.tag = i;
+//                iv2.image = [UIImage imageNamed:@"005_watch_03mv_20141105_14"];
+                [shareBtn setImage:[UIImage imageNamed:@"005_watch_03mv_20141105_14"] forState:UIControlStateNormal];
+                [shareBtn addTarget:self action:@selector(videoShare:) forControlEvents:UIControlEventTouchUpInside];
+                
+                
+                
+                [view addSubview:shareBtn];
                 
                 UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.videoView.frame.size.width-45, 75, 25, 25)];
+                btn1.tag = i;
                 [btn1 setImage:[UIImage imageNamed:@"005_watch_03mv_20141105_11"] forState:UIControlStateNormal];
                 
-                // [btn1 addTarget:self action:@selector(playVedio:) forControlEvents:UIControlEventTouchUpInside];
+                 [btn1 addTarget:self action:@selector(videoPlay:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [view addSubview:btn1];
                 
@@ -572,7 +680,7 @@
             
             
             
-            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,4*120,fourSV.frame.size.width,80)];
+            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.videoListAry.count*120,fourSV.frame.size.width,80)];
             UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
             oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
             [fiveIVdown addSubview:oneIV];
@@ -596,7 +704,7 @@
             [fourSV addSubview:fiveIVdown];
             
             
-            [fourSV setContentSize:CGSizeMake(fourSV.frame.size.width, 4*120+80)];
+            [fourSV setContentSize:CGSizeMake(fourSV.frame.size.width, self.videoListAry.count*120+80)];
             
             [self.videoView addSubview:fourSV];
             
@@ -634,27 +742,41 @@
             [fiveSV addSubview:imageView];
             
             
-            for (int i = 0; i<12; i++) {
-                
+            
+            
+            
+            for (int i = 0; i<self.bookListAry.count; i++) {
+                WatchBookListUserInfo*bookUserInfo = self.bookListAry[i];
                 
                 UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 50+i*100, self.bookView.frame.size.width, 100)];
                 
                 UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 70, 70)];
                 
-                UIImage*image = [UIImage imageNamed:@"006_watch_05eComics_20141105_07"];
-                iv.image = image;
+//                UIImage*image = [UIImage imageNamed:@"006_watch_05eComics_20141105_07"];
+//                iv.image = image;
+                [iv sd_setImageWithURL:[NSURL URLWithString:bookUserInfo.imgUrl]];
                 
                 [view addSubview:iv];
                 
-                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(100, 30, 100, 30)];
-                iv1.image = [UIImage imageNamed:@"006_watch_05eComics_20141105_13"];
+//                UIImageView*iv1 = [[UIImageView alloc]initWithFrame:CGRectMake(100, 30, 100, 30)];
+//                iv1.image = [UIImage imageNamed:@"006_watch_05eComics_20141105_13"];
+//                
+//                [view addSubview:iv1];
                 
-                [view addSubview:iv1];
+                UILabel*labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(100, 30, 100, 30)];
+                labelTitle.text = bookUserInfo.title;
+                labelTitle.textColor = [UIColor redColor];
+                labelTitle.font = [UIFont systemFontOfSize:16];
                 
-                UIImageView*iv2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.bookView.frame.size.width-115, 30, 100, 30)];
-                iv2.image = [UIImage imageNamed:@"006_watch_05eComics_20141105_10"];
+                [view addSubview:labelTitle];
                 
-                [view addSubview:iv2];
+                UIButton*btn = [[UIButton alloc]initWithFrame:CGRectMake(self.bookView.frame.size.width-115, 30, 100, 30)];
+                btn.tag= i;
+//                iv2.image = [UIImage imageNamed:@"006_watch_05eComics_20141105_10"];
+                [btn setImage:[UIImage imageNamed:@"006_watch_05eComics_20141105_10"] forState:UIControlStateNormal];
+                [btn addTarget:self action:@selector(bookBtn:) forControlEvents:UIControlEventTouchUpInside];
+                
+                [view addSubview:btn];
                 
                 
                 [fiveSV addSubview:view];
@@ -714,13 +836,73 @@
     }
 
 
+}
 
 
+#pragma TV 播放视频按钮
+-(void)tvPlayVedio:(UIButton*)sender
+{
+    WatchTVListUserInfo*userInfo = self.tvListAry[sender.tag];
+
+    
+    [self playVideoWithPath:userInfo.watchTVVideoLink];
+    
+}
 
 
+-(void)playVideoWithPath:(NSString*)path
+{
+    NSLog(@"%@",path);
+    MPMoviePlayerViewController*videoTV = [[MPMoviePlayerViewController alloc]initWithContentURL:[NSURL URLWithString:path]];
+    
+    [videoTV.moviePlayer prepareToPlay];
+    [self presentMoviePlayerViewControllerAnimated:videoTV];
+    
+    
+    [videoTV.moviePlayer setControlStyle:MPMovieControlStyleFullscreen];
+    [videoTV.view setBackgroundColor:[UIColor redColor]];
+    [videoTV.view setFrame:CGRectMake(self.view.bounds.size.height/3, self.view.bounds.size.height/3, self.view.bounds.size.width, self.view.bounds.size.height/3)];
+//
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieFinishedCallBack:) name:MPMoviePlayerPlaybackDidFinishNotification object:videoTV.moviePlayer];
+    
+//    self.webv = [[UIWebView alloc]initWithFrame:CGRectMake(10, 100, self.view.bounds.size.width-20, 200)];
+//    self.webv.backgroundColor = [UIColor grayColor];
+//    
+//    [self.webv setScalesPageToFit:YES];
+//    [(UIScrollView *)[[self.webv subviews] objectAtIndex:0] setBounces:NO];
+//    [(UIScrollView *)[[self.webv subviews] objectAtIndex:0] setScrollEnabled:NO];
+////    NSString*urlString =@"http://v.qq.com/iframe/player.html?vid=u01430toez0&tiny=0&auto=0";
+//    NSURL *url =[NSURL URLWithString:path];
+//    NSURLRequest *request =[NSURLRequest requestWithURL:url];
+//    
+//    [self.webv loadRequest:request];
+//    
+//    
+//    [self.view addSubview:self.webv];
+//    
+//    
+//    UISwipeGestureRecognizer *swipeGR = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipe:)];
+//    
+//    swipeGR.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
+//    swipeGR.numberOfTouchesRequired = 1;
+//    [self.view addGestureRecognizer:swipeGR];
 
- NSLog(@"btn::%d",self.view.subviews.count);
+}
 
+-(void)swipe:(UISwipeGestureRecognizer*)gr
+{
+    
+        [self.webv removeFromSuperview];
+
+    
+}
+#pragma TV 播放结束
+-(void)movieFinishedCallBack:(NSNotification*)notify
+{
+    MPMoviePlayerController*play =[notify object];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:play];
+    
+    
 
 }
 
@@ -728,13 +910,75 @@
 
 
 
+#pragma TV 分享视频按钮
+
+-(void)tvShareVedio:(UIButton*)sender
+{
+    NSLog(@"分享按钮 ");
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"分享" message:@"分享功能，正在检修中..." delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"ok", nil];
+    [av show];
+    
+
+}
+
+#pragma films role按钮播放
+-(void)roleVideoBtn:(UIButton*)sender
+{
+    WatchFilmsListUserInfo*filmsUserInfo =self.filmsListAry[sender.tag];
+    [self playVideoWithPath:filmsUserInfo.link];
+
+}
+
+#pragma films role分享按钮
+-(void)filmsShareVedio:(UIButton*)sender
+{
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"分享" message:@"分享功能，正在检修中..." delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"ok", nil];
+    [av show];
+
+}
+
+#pragma video Role播放按钮
+-(void)videoPlay:(UIButton*)sender
+{
+    WatchVideoListUserInfo*filmsUserInfo =self.videoListAry[sender.tag];
+    [self playVideoWithPath:filmsUserInfo.link];
 
 
+}
+
+#pragma video share
+-(void)videoShare:(UIButton*)sender
+{
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"分享" message:@"分享功能，正在检修中..." delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"ok", nil];
+    [av show];
+
+}
 
 
+#pragma book 跳转
+-(void)bookBtn:(UIButton*)sender
+{
+//    NSLog(@"%d",sender.tag);
+    WatchBookListUserInfo*bookUserInfo = self.bookListAry[sender.tag];
+    
+    self.webv = [[UIWebView alloc]init];
+        self.webv.backgroundColor = [UIColor grayColor];
+    
+        [self.webv setScalesPageToFit:YES];
+        [(UIScrollView *)[[self.webv subviews] objectAtIndex:0] setBounces:NO];
+        [(UIScrollView *)[[self.webv subviews] objectAtIndex:0] setScrollEnabled:NO];
+    //    NSString*urlString =@"http://v.qq.com/iframe/player.html?vid=u01430toez0&tiny=0&auto=0";
+        NSURL *url =[NSURL URLWithString:bookUserInfo.link];
+        NSURLRequest *request =[NSURLRequest requestWithURL:url];
+    
+        [self.webv loadRequest:request];
+    
+    
+        [self.view addSubview:self.webv];
+    
+        [self.webv removeFromSuperview];
 
-
-
+}
 
 
 

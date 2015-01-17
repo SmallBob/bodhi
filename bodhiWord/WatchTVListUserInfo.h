@@ -10,7 +10,7 @@
 
 @interface WatchTVListUserInfo : NSObject
 @property(nonatomic,copy)NSString*age;
-@property(nonatomic)int blues;
+@property(nonatomic,copy)NSString* blues;
 @property(nonatomic,copy)NSString*describes;
 @property(nonatomic,copy)NSString*watchTVListID;
 @property(nonatomic,copy)NSString*imgSize;
@@ -19,7 +19,7 @@
 @property(nonatomic,copy)NSString*addressIP;
 @property(nonatomic,copy)NSString*language;
 @property(nonatomic,copy)NSString*love;
-@property(nonatomic)int sorting;
+@property(nonatomic,copy)NSString* sorting;
 @property(nonatomic,copy)NSString*title;
 @property(nonatomic,copy)NSString*watchTVVideoLink;
 

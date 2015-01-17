@@ -15,9 +15,9 @@
 @property(nonatomic,copy)NSString*leftSegmentId;
 
 
-@property(nonatomic,copy)NSString*rightSegmentIconUrl;
-@property(nonatomic,copy)NSString*rightSegmentDescribes;
-@property(nonatomic,copy)NSString*rightSegmentTitile;
+//@property(nonatomic,copy)NSString*rightSegmentIconUrl;
+//@property(nonatomic,copy)NSString*rightSegmentDescribes;
+//@property(nonatomic,copy)NSString*rightSegmentTitile;
 
 
 @end
