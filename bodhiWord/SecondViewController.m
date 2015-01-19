@@ -167,7 +167,7 @@
             
         }else {
             
-            self.viewFirst.hidden =NO;
+            self.viewFirst.hidden = NO;
         [self.segmentedControl setSelectedSegmentIndex:0];
         [self changedSegment:self.segmentedControl];
             
@@ -296,7 +296,6 @@
         }];
     }
     
-//    NSLog(@"%d",self.view.subviews.count);
 }
 
 
@@ -344,15 +343,13 @@
                 
                 
                 
-               // self.ary[i]   peopleAll.png
+#pragma         self.ary[i]   peopleAll.png
                 playUserInfo*userInfo = self.ary[i];
         
               
                 
                 
                 [btn sd_setImageWithURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl] forState:UIControlStateNormal];
-
-//                NSLog(@"%@",userInfo.leftSegmentId);
                 
                 [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
                 
@@ -381,9 +378,13 @@
     
     
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,
-                                                              10+leftRightSV.frame.size.height+
-                                                              (self.ary.count%2 == 0 ?  20+self.ary.count/2*150 :  20+(self.ary.count/2+1)*150) , self.firstSV.frame.size.width, 80)];
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:
+                       CGRectMake(0,
+                                  10+leftRightSV.frame.size.height+
+                                (self.ary.count%2 == 0 ?  20+self.ary.count/2*150 :  20+(self.ary.count/2+1)*150) ,
+                                  self.firstSV.frame.size.width,
+                                  80)];
+    
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
@@ -487,7 +488,9 @@
         
         
         NSDictionary*dic = obj;
-        //        app
+        
+        
+#pragma        app
         NSArray*appAry= [dic objectForKey:@"app"];
         
         for (NSDictionary*dic in appAry)
@@ -615,13 +618,7 @@
             self.pageCtrl.pageIndicatorTintColor = [UIColor blueColor];
             self.pageCtrl.currentPageIndicatorTintColor = [UIColor redColor];
             
-            
-            
-//            [self.changeView addSubview:self.pageCtrl];
-            
             [svView addSubview:self.pageCtrl];
-            
-            
             
             [self.clickView addSubview:svView];
             
@@ -635,7 +632,7 @@
     
    
 }
-//???????
+
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     CGPoint offset = scrollView.contentOffset;
@@ -731,21 +728,10 @@
     [oneIV addSubview:fiveBtnLeft];
     [oneIV addSubview:fiveBtnRight];
     
-    
-    
     [self.viewRight addSubview:fiveIVdown];
-
     
     [self.view addSubview:self.viewRight];
-    
-    
-    
-
-
-    
-
-
-
+  
 }
 
     
@@ -764,7 +750,9 @@
     [self.jpm requestPlayViewSocialWithParams:psUser.playSociaID andCallBack:^(id obj) {
         
         NSDictionary*dic = obj;
-        //        social
+       
+        
+#pragma social
         NSArray*socialAry= [dic objectForKey:@"social"];
         
         for (NSDictionary*dic in socialAry)
@@ -890,19 +878,9 @@
             self.pageCtrl.currentPageIndicatorTintColor = [UIColor redColor];
             
             
-            
-
-            
             [svView addSubview:self.pageCtrl];
 
             [self.rightClickView addSubview:svView];
-            
-            
-            
-            
-            
-            
-            
             
             
             

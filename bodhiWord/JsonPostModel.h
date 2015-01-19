@@ -12,6 +12,7 @@ typedef void(^CallBack) (id obj);
 
 
 @interface JsonPostModel : NSObject
+
 +(JsonPostModel*)shareJsonPostModel;
 -(void)showWaitAlertView;
 -(void)dismissWaitAlertView;
@@ -22,10 +23,11 @@ typedef void(^CallBack) (id obj);
 
 -(void)requestPlayViewData:(CallBack)callBack;
 -(void)requestPlayViewedAppDetailWithParams:(NSString*)params and:(CallBack)callBack;
-
 -(void)requestPlayViewSegmentRightView:(CallBack)callBack;
 -(void)requestPlayViewSocialWithParams:(NSString*)params andCallBack:(CallBack)callBack;
 
+
+-(void)requestwatchMainViewWithCallBack:(CallBack)callBack;
 -(void)requestWatchViewTVList:(CallBack)callBack;
 -(void)requestwatchviewFilmsList:(CallBack)callBack;
 -(void)requestwatchViewVideoList:(CallBack)callBack;

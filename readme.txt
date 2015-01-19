@@ -16,3 +16,4 @@ learn
 watch 视频问题
 creat 不确定性
 
+1.04 初版完成

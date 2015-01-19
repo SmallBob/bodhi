@@ -208,8 +208,6 @@
 //fourView
     self.fourView=[[UIView alloc]initWithFrame:CGRectMake(0, 450,  viewWidth,40)];
     
-    //self.fourView.backgroundColor = [UIColor grayColor];
-    
     UIButton*leftBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 0, 10, 40)];
     [leftBtn setImage:[UIImage imageNamed:@"fourViewBtnLeft.png"] forState:UIControlStateNormal];
     
@@ -379,6 +377,8 @@
 //loginBtn
 -(void)loginBtn:(UIButton *)sender
 {
+   
+    /*
     [self alphaSmall:0.5];
     self.friendBtn.hidden = YES;
     
@@ -402,9 +402,11 @@
     
     
     //[self.view addSubview:self.loginView];
+    */
     
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"登录功能,维护中..." delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
     
-
+    [av show];
 
 }
 

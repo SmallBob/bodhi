@@ -42,7 +42,7 @@ static UIAlertView*waitAlertView;
 -(NSString*)currentLanguage
 {
     NSArray*languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
-    NSLog(@"%@",languages);
+//    NSLog(@"%@",languages);
     NSString*str =  [languages objectAtIndex:0];
     
     if ([str isEqualToString:@"zh-Hans"]) {
@@ -67,11 +67,12 @@ static UIAlertView*waitAlertView;
     //role mainView scrolleView image
     [self showWaitAlertView];
     NSString*path = [NSString stringWithFormat:@"%@/bodhiworld_home/AppController/%@",AddressIP,apiName];
-    NSLog(@"%@?%@",path,params);
+//    NSLog(@"%@?%@",path,params);
     
     
     NSURL*url = [NSURL URLWithString:path];
     NSMutableURLRequest*request = [NSMutableURLRequest requestWithURL:url];
+    
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -79,7 +80,7 @@ static UIAlertView*waitAlertView;
     NSURLSessionDataTask*task =[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         
-        NSLog(@"%@",dic);
+//        NSLog(@"%@",dic);
         callBack(dic);
         
         [self dismissWaitAlertView];
@@ -118,7 +119,7 @@ static UIAlertView*waitAlertView;
     
     [self postByApiName:@"homeList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
-        NSLog(@"%@",dic);
+//        NSLog(@"%@",dic);
         
         NSArray*adv = [dic objectForKey:@"adv"];
         
@@ -203,9 +204,10 @@ static UIAlertView*waitAlertView;
 //watch main
 -(void)requestwatchMainViewWithCallBack:(CallBack)callBack
 {
-    [self postByApiName:@"" andParams:@"" andCallBack:^(id obj) {
-        
-        callBack(@"");
+    [self postByApiName:@"watchList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+        NSDictionary*dic = obj;
+    
+        callBack(dic);
     }];
     
     

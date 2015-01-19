@@ -135,6 +135,14 @@
 		04F7845B1A2EF7F20062EFBF /* create_03sticker_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F784321A2EF7F20062EFBF /* create_03sticker_10.png */; };
 		04F7845C1A2EF7F20062EFBF /* create_03sticker_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F784331A2EF7F20062EFBF /* create_03sticker_15.png */; };
 		04F7845F1A2EFD7E0062EFBF /* bodhi-learn_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F7845E1A2EFD7E0062EFBF /* bodhi-learn_02.png */; };
+		833A39BA1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B21A6CFF91006D6515 /* 001_watch_06mainpage_20141105_01.png */; };
+		833A39BB1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B31A6CFF91006D6515 /* 001_watch_06mainpage_20141105_02.png */; };
+		833A39BC1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B41A6CFF91006D6515 /* 001_watch_06mainpage_20141105_12.png */; };
+		833A39BD1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B51A6CFF91006D6515 /* 001_watch_06mainpage_20141105_11.png */; };
+		833A39BE1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_03.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B61A6CFF91006D6515 /* 001_watch_06mainpage_20141105_03.png */; };
+		833A39BF1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_04.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B71A6CFF91006D6515 /* 001_watch_06mainpage_20141105_04.png */; };
+		833A39C01A6CFF91006D6515 /* 001_watch_06mainpage_20141105_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B81A6CFF91006D6515 /* 001_watch_06mainpage_20141105_14.png */; };
+		833A39C11A6CFF91006D6515 /* 001_watch_06mainpage_20141105_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 833A39B91A6CFF91006D6515 /* 001_watch_06mainpage_20141105_13.png */; };
 		83422DD71A66631B0074BE97 /* playEdAppDetailAppUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 83422DD61A66631B0074BE97 /* playEdAppDetailAppUserInfo.m */; };
 		83422E0C1A66A8880074BE97 /* playEdAppDetailAppImgUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 83422E0B1A66A8880074BE97 /* playEdAppDetailAppImgUserInfo.m */; };
 		83422E131A66B6780074BE97 /* joinNow.png in Resources */ = {isa = PBXBuildFile; fileRef = 83422E0E1A66B6780074BE97 /* joinNow.png */; };
@@ -351,6 +359,14 @@
 		04F784321A2EF7F20062EFBF /* create_03sticker_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_03sticker_10.png; sourceTree = "<group>"; };
 		04F784331A2EF7F20062EFBF /* create_03sticker_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_03sticker_15.png; sourceTree = "<group>"; };
 		04F7845E1A2EFD7E0062EFBF /* bodhi-learn_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bodhi-learn_02.png"; sourceTree = "<group>"; };
+		833A39B21A6CFF91006D6515 /* 001_watch_06mainpage_20141105_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_01.png; sourceTree = "<group>"; };
+		833A39B31A6CFF91006D6515 /* 001_watch_06mainpage_20141105_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_02.png; sourceTree = "<group>"; };
+		833A39B41A6CFF91006D6515 /* 001_watch_06mainpage_20141105_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_12.png; sourceTree = "<group>"; };
+		833A39B51A6CFF91006D6515 /* 001_watch_06mainpage_20141105_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_11.png; sourceTree = "<group>"; };
+		833A39B61A6CFF91006D6515 /* 001_watch_06mainpage_20141105_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_03.png; sourceTree = "<group>"; };
+		833A39B71A6CFF91006D6515 /* 001_watch_06mainpage_20141105_04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_04.png; sourceTree = "<group>"; };
+		833A39B81A6CFF91006D6515 /* 001_watch_06mainpage_20141105_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_14.png; sourceTree = "<group>"; };
+		833A39B91A6CFF91006D6515 /* 001_watch_06mainpage_20141105_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001_watch_06mainpage_20141105_13.png; sourceTree = "<group>"; };
 		83422DD51A66631B0074BE97 /* playEdAppDetailAppUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = playEdAppDetailAppUserInfo.h; sourceTree = "<group>"; };
 		83422DD61A66631B0074BE97 /* playEdAppDetailAppUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = playEdAppDetailAppUserInfo.m; sourceTree = "<group>"; };
 		83422E0A1A66A8880074BE97 /* playEdAppDetailAppImgUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = playEdAppDetailAppImgUserInfo.h; sourceTree = "<group>"; };
@@ -643,6 +659,7 @@
 		04D3EB131A2EAACE001B27AE /* wach */ = {
 			isa = PBXGroup;
 			children = (
+				833A39B11A6CFF91006D6515 /* watchMain */,
 				04D3EB141A2EAACE001B27AE /* 001_watch_06mainpage_20141105 */,
 				04D3EB1C1A2EAACE001B27AE /* 002_watch_01tv_20141105 */,
 				04D3EB2B1A2EAACE001B27AE /* 004_watch_04_microfilm_20141105 */,
@@ -858,6 +875,22 @@
 				04F784331A2EF7F20062EFBF /* create_03sticker_15.png */,
 			);
 			path = create_03sticker;
+			sourceTree = "<group>";
+		};
+		833A39B11A6CFF91006D6515 /* watchMain */ = {
+			isa = PBXGroup;
+			children = (
+				833A39B21A6CFF91006D6515 /* 001_watch_06mainpage_20141105_01.png */,
+				833A39B31A6CFF91006D6515 /* 001_watch_06mainpage_20141105_02.png */,
+				833A39B41A6CFF91006D6515 /* 001_watch_06mainpage_20141105_12.png */,
+				833A39B51A6CFF91006D6515 /* 001_watch_06mainpage_20141105_11.png */,
+				833A39B61A6CFF91006D6515 /* 001_watch_06mainpage_20141105_03.png */,
+				833A39B71A6CFF91006D6515 /* 001_watch_06mainpage_20141105_04.png */,
+				833A39B81A6CFF91006D6515 /* 001_watch_06mainpage_20141105_14.png */,
+				833A39B91A6CFF91006D6515 /* 001_watch_06mainpage_20141105_13.png */,
+			);
+			name = watchMain;
+			path = 001_watch_06mainpage_20141105/watchMain;
 			sourceTree = "<group>";
 		};
 		83422E0D1A66B6780074BE97 /* bodhiMainButton */ = {
@@ -1132,20 +1165,25 @@
 				04F784411A2EF7F20062EFBF /* bodhi-learn_23.png in Resources */,
 				83F4858E1A6A154E00829A9F /* charater_15.png in Resources */,
 				83F4858B1A6A154E00829A9F /* charater_07.png in Resources */,
+				833A39C11A6CFF91006D6515 /* 001_watch_06mainpage_20141105_13.png in Resources */,
+				833A39C01A6CFF91006D6515 /* 001_watch_06mainpage_20141105_14.png in Resources */,
 				83F4858A1A6A154E00829A9F /* charater_06.png in Resources */,
 				0475B52A1A304E5B00B23016 /* Bodhiword_59.png in Resources */,
 				04B623A71A2828830023A52B /* AB.png in Resources */,
+				833A39BF1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_04.png in Resources */,
 				04D3EB591A2EAACE001B27AE /* playOne02.png in Resources */,
 				04D3EB541A2EAACE001B27AE /* 002_watch_01tv_20141105_02.png in Resources */,
 				04B623B81A2828830023A52B /* Bodhiword-mainpage_38.png in Resources */,
 				83F485881A6A154E00829A9F /* charater_04.png in Resources */,
 				83422E141A66B6780074BE97 /* play_00.png in Resources */,
 				0475B52D1A30518E00B23016 /* Bodhiword_76.png in Resources */,
+				833A39BB1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_02.png in Resources */,
 				04B623BF1A2828830023A52B /* share001.png in Resources */,
 				04B623D01A2847800023A52B /* Bodhiword_37.png in Resources */,
 				04D3EB781A2EAACE001B27AE /* watch_05categories_20141105_02.png in Resources */,
 				04F7843E1A2EF7F20062EFBF /* bodhi-learn02.png in Resources */,
 				04D3EB501A2EAACE001B27AE /* 04.png in Resources */,
+				833A39BD1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_11.png in Resources */,
 				04B623D31A284C4A0023A52B /* Bodhiword-learn.png in Resources */,
 				04D3EB561A2EAACE001B27AE /* 002_watch_01tv_20141105_06.png in Resources */,
 				83F485911A6A154E00829A9F /* role03.png in Resources */,
@@ -1205,6 +1243,7 @@
 				83F485921A6A154E00829A9F /* role04.png in Resources */,
 				04F784041A2EDFDC0062EFBF /* play_01mainpage_20141105_19.png in Resources */,
 				04DC5D931A2D91860089DEE9 /* play_03bodhirace_20141105_02.png in Resources */,
+				833A39BE1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_03.png in Resources */,
 				04B623C01A2828830023A52B /* Bodhiword-mainpage_56.png in Resources */,
 				04D3EB5F1A2EAACE001B27AE /* 002_watch_01tv_20141105_38.png in Resources */,
 				04D3EB791A2EAACE001B27AE /* watch_05categories_20141105_03.png in Resources */,
@@ -1231,6 +1270,7 @@
 				04D3EB661A2EAACE001B27AE /* 004_watch_04_microfilm_20141105_15.png in Resources */,
 				83F4858D1A6A154E00829A9F /* charater_081.png in Resources */,
 				04F784581A2EF7F20062EFBF /* create_03sticker_02.png in Resources */,
+				833A39BC1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_12.png in Resources */,
 				04F7843B1A2EF7F20062EFBF /* bodhi-learn_14.png in Resources */,
 				04F7845C1A2EF7F20062EFBF /* create_03sticker_15.png in Resources */,
 				04B6239F1A2828830023A52B /* btn01.png in Resources */,
@@ -1240,6 +1280,7 @@
 				04D3EB721A2EAACE001B27AE /* 006_watch_05eComics_20141105_07.png in Resources */,
 				04B623C11A2828830023A52B /* share002.png in Resources */,
 				83F485A31A6A35CE00829A9F /* 750wallpaper_03.jpg in Resources */,
+				833A39BA1A6CFF91006D6515 /* 001_watch_06mainpage_20141105_01.png in Resources */,
 				83F485A61A6A35CE00829A9F /* 750wallpaper_06.jpg in Resources */,
 				04F7844C1A2EF7F20062EFBF /* create_01wallpaper_20141105_008.png in Resources */,
 				04D3EB771A2EAACE001B27AE /* watch_05categories_20141105_01.png in Resources */,
