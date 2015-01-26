@@ -174,6 +174,7 @@
 		8347D2BB1A600A4700BE28CB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8347D2831A60092000BE28CB /* MapKit.framework */; };
 		8347D2BC1A600A5100BE28CB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8347D2851A60092E00BE28CB /* ImageIO.framework */; };
 		836630B11A68DFDB00515B1A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836630B01A68DFDB00515B1A /* MediaPlayer.framework */; };
+		837AE5601A71F7B500690D51 /* WatchListUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 837AE55F1A71F7B500690D51 /* WatchListUserInfo.m */; };
 		83974A5B1A42A3E000731DB4 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 83974A5A1A42A3E000731DB4 /* UserInfo.m */; };
 		83974A5E1A42C8F100731DB4 /* playUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 83974A5D1A42C8F100731DB4 /* playUserInfo.m */; };
 		83BECAB41A5FC61400772FBD /* WatchTVListUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BECAB31A5FC61400772FBD /* WatchTVListUserInfo.m */; };
@@ -422,6 +423,8 @@
 		8347D2A71A60099A00BE28CB /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		8347D2A81A60099A00BE28CB /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		836630B01A68DFDB00515B1A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		837AE55E1A71F7B500690D51 /* WatchListUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchListUserInfo.h; sourceTree = "<group>"; };
+		837AE55F1A71F7B500690D51 /* WatchListUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchListUserInfo.m; sourceTree = "<group>"; };
 		83974A591A42A3E000731DB4 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		83974A5A1A42A3E000731DB4 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		83974A5C1A42C8F100731DB4 /* playUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = playUserInfo.h; sourceTree = "<group>"; };
@@ -986,6 +989,8 @@
 		83F485351A69F87E00829A9F /* watchJson */ = {
 			isa = PBXGroup;
 			children = (
+				837AE55E1A71F7B500690D51 /* WatchListUserInfo.h */,
+				837AE55F1A71F7B500690D51 /* WatchListUserInfo.m */,
 				83BECAB21A5FC61400772FBD /* WatchTVListUserInfo.h */,
 				83BECAB31A5FC61400772FBD /* WatchTVListUserInfo.m */,
 				83BECAB91A5FCF8E00772FBD /* WatchFilmsListUserInfo.h */,
@@ -1327,6 +1332,7 @@
 				8347D2B41A60099A00BE28CB /* UIImage+MultiFormat.m in Sources */,
 				0466B45B1A2DA57B00BF43B3 /* FourViewController.m in Sources */,
 				8347D27F1A60012C00BE28CB /* WatchVideoListUserInfo.m in Sources */,
+				837AE5601A71F7B500690D51 /* WatchListUserInfo.m in Sources */,
 				8347D2B81A60099A00BE28CB /* UIView+WebCacheOperation.m in Sources */,
 				83422DD71A66631B0074BE97 /* playEdAppDetailAppUserInfo.m in Sources */,
 				04B622FA1A281F180023A52B /* SecondViewController.m in Sources */,

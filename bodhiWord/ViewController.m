@@ -161,7 +161,7 @@
     
 //play watch learn create 按钮
     
-    for (int i = 0; i<5; i++) {
+    for (int i = 0; i<4; i++) {
         //左边 10  右边 5 间距 5
         CGFloat btnWidth= (viewWidth-10-5-20)/4;
         

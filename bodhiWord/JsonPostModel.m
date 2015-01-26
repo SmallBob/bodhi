@@ -67,7 +67,7 @@ static UIAlertView*waitAlertView;
     //role mainView scrolleView image
     [self showWaitAlertView];
     NSString*path = [NSString stringWithFormat:@"%@/bodhiworld_home/AppController/%@",AddressIP,apiName];
-//    NSLog(@"%@?%@",path,params);
+//    NSLog(@"%@???????????%@",path,params);
     
     
     NSURL*url = [NSURL URLWithString:path];
@@ -114,8 +114,17 @@ static UIAlertView*waitAlertView;
 
 -(void)requestMainviewRoleImage:(CallBack)callBack
 {
-    NSString*allParams = [NSString stringWithFormat:@"locale=%@&imgType=WEB&imgSize=1920*1920",[self currentLanguage]];
     
+    
+#pragma 根据当机机器型号 匹配图片尺寸
+//    NSString*allParams = [NSString stringWithFormat:@"locale=%@&imgType=WEB&imgSize=%d*%d",[self currentLanguage],(int)[UIScreen mainScreen].nativeBounds.size.width,(int)[UIScreen mainScreen].nativeBounds.size.height];
+//     NSLog(@"%d--%d",(int)[UIScreen mainScreen].nativeBounds.size.width,(int)[UIScreen mainScreen].nativeBounds.size.height);
+//    NSLog(@"%@",allParams);
+    
+    
+    
+    
+     NSString*allParams = [NSString stringWithFormat:@"locale=%@&imgType=WEB&imgSize=1920*1920",[self currentLanguage]];
     
     [self postByApiName:@"homeList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
@@ -206,6 +215,8 @@ static UIAlertView*waitAlertView;
 {
     [self postByApiName:@"watchList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic = obj;
+        
+//        NSLog(@"%@",dic);
     
         callBack(dic);
     }];
@@ -219,10 +230,64 @@ static UIAlertView*waitAlertView;
 
 
 //Watch tvList
--(void)requestWatchViewTVList:(CallBack)callBack
+-(void)requestWatchViewTVListsNumber:(CallBack)callBack
 {
     [self postByApiName:@"tvList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
         NSDictionary*dic = obj;
+        
+        NSMutableArray*ary =[NSMutableArray array ];
+        NSArray*tvAry = [dic objectForKey:@"tv"];
+        NSString*num = [dic objectForKey:@"tvNumber"];
+        
+        if (![tvAry isMemberOfClass:[NSNull class]]) {
+            for (NSDictionary*dicTV in tvAry) {
+                WatchTVListUserInfo*tvListUserInfo = [[WatchTVListUserInfo alloc]init];
+                tvListUserInfo.age = [dicTV objectForKey:@"age"];
+                tvListUserInfo.blues = [dicTV objectForKey:@"blues"];
+                
+                tvListUserInfo.describes = [dicTV objectForKey:@"describes"];
+                
+                tvListUserInfo.watchTVListID = [dicTV objectForKey:@"id"];
+                tvListUserInfo.imgSize = [dicTV objectForKey:@"imgSize"];
+                tvListUserInfo.imgType = [dicTV objectForKey:@"imgType"];
+                tvListUserInfo.imgUrl = [dicTV objectForKey:@"imgUrl"];
+                tvListUserInfo.addressIP = [dicTV objectForKey:@"ip"];
+                tvListUserInfo.language = [dicTV objectForKey:@"language"];
+                tvListUserInfo.love = [dicTV objectForKey:@"love"];
+                tvListUserInfo.sorting = [dicTV objectForKey:@"sorting"];
+                tvListUserInfo.title = [dicTV objectForKey:@"title"];
+                tvListUserInfo.watchTVVideoLink = [dicTV objectForKey:@"videoLink"];
+                [ary addObject:tvListUserInfo];
+            }
+        }
+        
+        
+        
+        
+        
+        NSArray*arry = @[ary ,num];
+        
+       
+        
+        callBack(arry);
+        
+        
+    }];
+    
+
+
+}
+
+//watchTVlist pageNo  pageSize
+
+-(void)requestWatchViewTVListWithpageNO:(NSString*)pageNo andPageSize:(NSString*)pageSize andCallBack:(CallBack)callBack
+{
+    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&pageNo=%@&pageSize=%@",pageNo,pageSize];
+    
+    
+    [self postByApiName:@"tvList" andParams:allParams andCallBack:^(id obj) {
+        NSDictionary*dic = obj;
+        
         
         NSMutableArray*ary =[NSMutableArray array ];
         NSArray*tvAry = [dic objectForKeyedSubscript:@"tv"];
@@ -233,7 +298,7 @@ static UIAlertView*waitAlertView;
                 tvListUserInfo.age = [dicTV objectForKey:@"age"];
                 tvListUserInfo.blues = [dicTV objectForKey:@"blues"];
                 
-               tvListUserInfo.describes = [dicTV objectForKey:@"describes"];
+                tvListUserInfo.describes = [dicTV objectForKey:@"describes"];
                 
                 tvListUserInfo.watchTVListID = [dicTV objectForKey:@"id"];
                 tvListUserInfo.imgSize = [dicTV objectForKey:@"imgSize"];
@@ -253,10 +318,16 @@ static UIAlertView*waitAlertView;
         
         
     }];
-    
+
+
+
 
 
 }
+
+
+
+
 
 //watch films
 -(void)requestwatchviewFilmsList:(CallBack)callBack

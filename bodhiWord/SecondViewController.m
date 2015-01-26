@@ -224,7 +224,7 @@
 
 -(void)goSecondView:(UIButton*)btn
 {
-//     NSLog(@"%d",self.view.subviews.count);
+
     [self.tabBarController setSelectedIndex:btn.tag];
     
     if (btn.tag==0) {
