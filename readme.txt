@@ -19,4 +19,6 @@ creat 不确定性
 1.04 初版完成
 1.05 play watch 
 watch 播放  季-集
+1.06 KitLocate.framework
+添加框架
 

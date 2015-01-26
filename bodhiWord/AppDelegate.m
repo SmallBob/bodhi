@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 
+
 @interface AppDelegate ()
 
 @end
@@ -17,6 +18,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [KitLocate initKitLocateWithDelegate:self.handlerKL APIKey:@"92faf377-9667-45c4-b102-4fb8bc4152c9"];
+    [KitLocate registerForLocalNotifications];
+    [KLLocation registerGeofencing];
+
+    
+    
     return YES;
 }
 

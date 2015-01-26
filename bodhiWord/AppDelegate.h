@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <KitLocate/KitLocate.h>
+
+@class LocationHandler;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic)int roleNum;
+
+@property(nonatomic,strong)LocationHandler*handlerKL;
 @end
 
