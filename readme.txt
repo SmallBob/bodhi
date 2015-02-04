@@ -21,4 +21,10 @@ creat 不确定性
 watch 播放  季-集
 1.06 KitLocate.framework
 添加框架
+1.07 更改post请求 用AFNetworking 框架
+     添加play广告图跳转
+     添加 coming soon
+     登录、注册json
+
+
 

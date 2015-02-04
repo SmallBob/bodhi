@@ -28,17 +28,17 @@
     [self creatBackBtn];
     
     
-        self.mutableAry = [NSMutableArray array];
+    self.mutableAry = [NSMutableArray array];
     self.charaterAry = [NSMutableArray array];
         for (int i = 0; i<8; i++) {
             //            UIImage*image =[UIImage imageNamed:[NSString stringWithFormat:@"character_%02d",i]];
-            UIImage*image = [UIImage imageNamed:[NSString stringWithFormat:@"role0%d.png",i+1] ];
+            UIImage*imageName = [UIImage imageNamed:[NSString stringWithFormat:@"role_0%d.png",i+1] ];
             
-            [self.mutableAry addObject:image];
+            [self.mutableAry addObject:imageName];
             
-            UIImage*imageC = [UIImage imageNamed:[NSString stringWithFormat:@"charater_0%d.png",i+1]];
+            UIImage*imageRole = [UIImage imageNamed:[NSString stringWithFormat:@"charater%d_02.png",i+1]];
             
-            [self.charaterAry addObject:imageC];
+            [self.charaterAry addObject:imageRole];
             
         }
     
@@ -55,7 +55,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {[super viewWillAppear:animated];
     self.contentNum =((AppDelegate*)[UIApplication sharedApplication].delegate).roleNum ;
-    NSLog(@"contentNum:::%d",self.contentNum);
+    //NSLog(@"contentNum:::%d",self.contentNum);
 
  [self creatRoleImageWithNum:((AppDelegate*)[UIApplication sharedApplication].delegate).roleNum ];
 }
@@ -66,10 +66,50 @@
 {
     
     
-    self.changeView = [[UIView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100-80)];
+    self.changeView = [[UIView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100-50)];
     [self.view addSubview:self.changeView];
     
+//主背景
+    
+    UIImageView*imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"charater~~_02"]];
+    
+    imageView.frame = CGRectMake(0, 0, self.changeView.frame.size.width, self.changeView.frame.size.height);
+    
+    [self.changeView addSubview:imageView];
+    
+    
+//  草地
+    UIImageView*mainIV= [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"charater_cao_02"]];
+    mainIV.frame  = CGRectMake(0, 0, self.changeView.frame.size.width, self.changeView.frame.size.height);
+    
+    [self.changeView addSubview:mainIV];
+    
+    
+//  左右
+    UIImageView*leftIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"charater_03"]];
+    
+    leftIV.frame = CGRectMake(10, self.changeView.frame.size.height-100, 30,80);
+    
+//    leftIV.backgroundColor = [UIColor redColor];
+    
+    [self.changeView addSubview:leftIV];
+    
+    UIImageView*rightIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"charater_08"]];
+    
+    rightIV.frame = CGRectMake(self.changeView.frame.size.width-40, self.changeView.frame.size.height-100, 30,80);
+    
+    [self.changeView addSubview:rightIV];
+    
+    
+    
+    
+    
     CGRect bounds = self.changeView.frame;
+    
+    
+    
+    
+    
     
     self.helpScrView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, bounds.size.width,bounds.size.height)];
     
@@ -83,12 +123,21 @@
     
     for (int i = 0; i<self.mutableAry.count; i++) {
         self.iv = [[UIImageView alloc]initWithFrame:CGRectMake(bounds.size.width*i, 0, bounds.size.width, bounds.size.height)];
-        self.iv.image = self.mutableAry[i];
+        self.iv.image = self.charaterAry[i];
         [self.helpScrView addSubview:self.iv];
         
-        UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(bounds.size.width/4+bounds.size.width*i,bounds.size.height -100 , bounds.size.width/2, 60)];
-        imageView.image = self.charaterAry[i];
+        UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(bounds.size.width/3+bounds.size.width*i,bounds.size.height -75 , bounds.size.width/2, 40)];
+        imageView.image = self.mutableAry[i];
         [self.helpScrView addSubview:imageView];
+        
+        UIButton*playBtn = [[UIButton alloc]initWithFrame:CGRectMake(50+bounds.size.width*i, bounds.size.height-75, 40, 40)];
+        playBtn.tag = i;
+        [playBtn setImage:[UIImage imageNamed:@"btn_movies_button.png"] forState:UIControlStateNormal];
+//        playBtn.backgroundColor = [UIColor redColor];
+        
+        [playBtn addTarget:self action:@selector(playBtn:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.helpScrView addSubview:playBtn];
         
         
     }
@@ -102,6 +151,7 @@
     self.pageCtrl.currentPage = num;
     
     self.pageCtrl.currentPageIndicatorTintColor = [UIColor yellowColor];
+    self.pageCtrl.pageIndicatorTintColor = [UIColor grayColor];
 
     [self.changeView addSubview:self.pageCtrl];
     
@@ -121,11 +171,21 @@
     
 }
 
+
+-(void)playBtn:(UIButton*)sender
+{
+    
+
+
+}
+
+
+
 -(void)creatBackBtn
 {
     
     UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 80, 60)];
-    [backBtn setImage:[UIImage imageNamed:@"screenTitle.png"] forState:UIControlStateNormal];
+    [backBtn setImage:[UIImage imageNamed:@"ingame_logo"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(backMainView:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backBtn];
     
@@ -147,19 +207,19 @@
     }
     
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,  self.view.frame.size.height-80, self.view.frame.size.width, 80)];
-    UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,  self.view.frame.size.height-50, self.view.frame.size.width, 50)];
+    UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
     
-    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, 50)];
+    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 50)];
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 30)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 30)];
     
     
     [oneIV addSubview:fiveBtnLeft];

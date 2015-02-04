@@ -18,6 +18,12 @@ typedef void(^CallBack) (id obj);
 -(void)dismissWaitAlertView;
 
 
+-(void)requestLoginWithUserName:(NSString*)userName andPassWord:(NSString*)passWord andCallBack:(CallBack)callBack;
+-(void)requestRegisteWithUserName:(NSString*)userName andPassWord:(NSString*)passWord andEmail:(NSString*)email andLocale :(NSString*)locale  andCallBack:(CallBack)callBack;
+
+
+
+
 -(void)requestMainviewRoleImage:(CallBack)callBack;
 
 

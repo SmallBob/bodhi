@@ -11,4 +11,5 @@
 @interface playEdAppDetailAppImgUserInfo : NSObject
 @property(nonatomic,copy)NSString*imgUrl;
 @property(nonatomic,copy)NSString*appImgID;
+//@property(nonatomic,copy)NSString*status;
 @end

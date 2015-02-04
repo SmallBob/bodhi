@@ -15,6 +15,7 @@
 #import "UIButton+WebCache.h"
 #import "RoleViewController.h"
 #import "AppDelegate.h"
+#import "LoginViewController.h"
 
 #import "JsonPostModel.h"
 
@@ -115,7 +116,7 @@
     
     
 //主界面底层是 UIScrollVIew
-    self.mainSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 224, self.view.frame.size.width, self.view.frame.size.height-224)];
+    self.mainSV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height-200)];
     
 //显示垂直方向滚动条
     self.mainSV.showsVerticalScrollIndicator=YES;
@@ -139,15 +140,9 @@
     [loginBtn addTarget:self action:@selector(loginBtn:) forControlEvents:UIControlEventTouchUpInside];
     
     
-   self.friendBtn=[[UIButton alloc]initWithFrame:CGRectMake(viewWidth-70, 10, 60, 60)];
-     
-    [self.friendBtn setImage:[UIImage imageNamed:@"joinNow.png"] forState:UIControlStateNormal];
-    
-   // [ self.friendBtn addTarget:self action:@selector(newFriendBtnView:) forControlEvents:UIControlEventTouchUpInside];
-    
     
     UIImageView*logoIV=[[UIImageView alloc]initWithFrame:CGRectMake(viewWidth/2-45, 5, 90, 70)];
-    logoIV.image=[UIImage imageNamed:@"screenTitle.png"];
+    logoIV.image=[UIImage imageNamed:@"logo"];
     //logoIV.backgroundColor=[UIColor grayColor];
     
     
@@ -157,7 +152,9 @@
     
     
 //secondView
-    self.secondView=[[UIView alloc]initWithFrame:CGRectMake(0, 104,  viewWidth,120)];
+    self.secondView=[[UIView alloc]initWithFrame:CGRectMake(0, 104,  viewWidth,100)];
+    
+//    self.secondView.backgroundColor = [UIColor redColor];
     
 //play watch learn create 按钮
     
@@ -165,9 +162,21 @@
         //左边 10  右边 5 间距 5
         CGFloat btnWidth= (viewWidth-10-5-20)/4;
         
+        UIView*btnView = [[UIView alloc]initWithFrame:CGRectMake(10+i*(btnWidth+5), 10, btnWidth, btnWidth)];
+        UIImageView*iv = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, btnView.frame.size.width, btnView.frame.size.height)];
+        iv.image = [UIImage imageNamed:[NSString stringWithFormat:@"btn_bg_0%d",i+1]];
         
-        UIButton*studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(10+i*(btnWidth+5), 10, btnWidth, 80)];
-        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"btn0%d.png",i+1]] forState:UIControlStateNormal];
+        [btnView addSubview:iv];
+        
+        
+        
+        
+        
+        UIButton*studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(5, 0, btnView.frame.size.width-10, btnView.frame.size.height-10)];
+        
+        
+     
+        [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon_0%d",i+1]] forState:UIControlStateNormal];
         
         studyBtn.tag=i;
         
@@ -175,16 +184,39 @@
         
         studyBtn.tag=i;//  为添加背景图片
         
-        [self.secondView addSubview:studyBtn];
+        [btnView addSubview:studyBtn];
+        
+        UIImageView*textIv =[[ UIImageView alloc]initWithFrame:CGRectMake(5, btnView.frame.size.height-15, btnView.frame.size.width-10, 15)];
+        textIv.image = [UIImage imageNamed:[NSString stringWithFormat:@"text_0%d",i+1]];
+        
+        [btnView addSubview:textIv];
+        
+        
+        
+        [self.secondView addSubview:btnView];
         
         
         
     }
     
+    UIView*dView =[[UIView alloc]initWithFrame:CGRectMake(0, self.secondView.frame.size.height-10, self.secondView.frame.size.width, 10)];
+    
+    UIImageView*dIV1=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, dView.frame.size.width, 10)];
+    dIV1.image = [UIImage imageNamed:@"top_shadow.jpg"];
+    [dView addSubview:dIV1];
+    UIImageView*dIV2=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, dView.frame.size.width, 5)];
+    dIV2.image = [UIImage imageNamed:@"top_shadow2.jpg"];
+    [dView addSubview:dIV2];
+    
+    [self.secondView addSubview:dView];
+    
     
  //mianSV
 //thirdView
     self.thirdView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,  viewWidth,450)];
+//    self.thirdView.backgroundColor = [UIColor grayColor];
+    
+    
     
     UIButton*ABbtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 0, viewWidth-20, 210)];
     
@@ -271,7 +303,7 @@
     
 
 //fiveView
-    self.fiveView=[[UIView alloc]initWithFrame:CGRectMake(0, 520,  viewWidth,160)];
+    self.fiveView=[[UIView alloc]initWithFrame:CGRectMake(0, 520,  viewWidth,130)];
     
     //self.fiveView.backgroundColor = [UIColor redColor];
     
@@ -302,24 +334,35 @@
     
     
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,  80, self.fiveView.frame.size.width, 110)];
+    
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,  80, self.fiveView.frame.size.width, 50)];
+    
+    
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.fiveView.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
     
-    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.fiveView.frame.size.width, self.fiveView.frame.size.height-20)];
+    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.fiveView.frame.size.width, 30)];
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 60, 20)];
+//    fiveBtnLeft.backgroundColor = [UIColor blackColor];
+    [fiveBtnLeft addTarget:self action:@selector(fiveBtnLeft:) forControlEvents:UIControlEventTouchUpInside];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
     
     
-    [oneIV addSubview:fiveBtnLeft];
     
-    [oneIV addSubview:fiveBtnRight];
+    
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 20)];
+    
+//    fiveBtnRight.backgroundColor = [UIColor blackColor];
+    [fiveBtnRight addTarget:self action:@selector(fiveBtnRight:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [fiveIVdown addSubview:fiveBtnLeft];
+    
+    [fiveIVdown addSubview:fiveBtnRight];
     
     [self.fiveView addSubview:fiveIVdown];
     
@@ -349,6 +392,27 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+
+#pragma 关于我们
+-(void)fiveBtnLeft:(UIButton*)sender{
+    
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"CITSZ" message:@"功能确定中..." delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+
+    [av show];
+
+}
+
+-(void)fiveBtnRight:(UIButton*)sender{
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"Contact US" message:@"功能确定中..." delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+    
+    [av show];
+
+}
+
+
+
+
+
 #pragma scrollRoleBtnToRole
 -(void)scrollRoleBtnToRole:(UIButton*)sender
 {
@@ -377,36 +441,13 @@
 //loginBtn
 -(void)loginBtn:(UIButton *)sender
 {
-   
-    /*
-    [self alphaSmall:0.5];
-    self.friendBtn.hidden = YES;
     
     
-    CGFloat height=self.firstView.frame.size.height+
-    self.secondView.frame.size.height+
-    self.thirdView.frame.size.height+
-    self.fourView.frame.size.height-150;
- 
-    self.loginView=[[UIView alloc]initWithFrame:CGRectMake(20, 10,  self.view.frame.size.width-40, height)];
-    self.loginView.backgroundColor=[UIColor redColor];
-    
-    //界面
     
     
-    UIButton*loginViewBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, self.loginView.frame.size.height-50, 50, 50)];
-    loginViewBtn.backgroundColor=[UIColor blueColor];
-    [loginViewBtn addTarget:self action:@selector(loginViewBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self performSegueWithIdentifier:@"login" sender:nil];
     
-    [self.loginView addSubview:loginViewBtn];
-    
-    
-    //[self.view addSubview:self.loginView];
-    */
-    
-    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"登录功能,维护中..." delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
-    
-    [av show];
+
 
 }
 
@@ -445,31 +486,7 @@
 }
 
 
-//newFriendBtnView
--(void)newFriendBtnView:(UIButton *)sender
-{
 
-    [self alphaSmall:0.5];
-    
-    CGFloat height=self.firstView.frame.size.height+
-    self.secondView.frame.size.height+
-    self.thirdView.frame.size.height+
-    self.fourView.frame.size.height-150;
-    
-    self.loginView=[[UIView alloc]initWithFrame:CGRectMake(20, 10,  self.view.frame.size.width-40, height)];
-    self.loginView.backgroundColor=[UIColor redColor];
-    
-    UIButton*loginViewBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, self.loginView.frame.size.height-50, 50, 50)];
-    loginViewBtn.backgroundColor=[UIColor blueColor];
-    [loginViewBtn addTarget:self action:@selector(loginViewBtn:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.loginView addSubview:loginViewBtn];
-    
-    [self.mainSV addSubview:self.loginView];
-    
-
-
-}
 
 #pragma scrollview
 
@@ -500,8 +517,19 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    
+    if ([segue.identifier isEqualToString:@"go"]) {
+        
+    
     UITabBarController*tbc = segue.destinationViewController;
     [tbc setSelectedIndex:self.num];
+    }else if([segue.identifier isEqualToString:@"login"]){
+    
+        LoginViewController*lvc = segue.destinationViewController;
+        
+        
+    
+    }
     
     
 }

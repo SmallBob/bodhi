@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="M8t-fa-Ixk">
+            <objects>
+                <viewController id="4D0-Sn-ZWw" customClass="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KRW-zL-XQU"/>
+                        <viewControllerLayoutGuide type="bottom" id="3nH-G0-qXd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cdP-aY-VUR" customClass="UIControl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <action selector="touchBackGround:" destination="4D0-Sn-ZWw" eventType="touchUpInside" id="6q2-Df-A2Y"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <segue destination="7nV-I0-fW8" kind="presentation" identifier="registe" id="Kly-Gh-ctp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gzn-Zl-K15" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1025" y="-629"/>
+        </scene>
+        <!--Registe View Controller-->
+        <scene sceneID="h8m-LV-3V7">
+            <objects>
+                <viewController id="7nV-I0-fW8" customClass="RegisteViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q4u-cN-6M4"/>
+                        <viewControllerLayoutGuide type="bottom" id="cKF-gd-zNZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8Gx-dF-UjW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vv5-MS-xDO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-175" y="-893"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -19,11 +61,12 @@
                     </view>
                     <connections>
                         <segue destination="Zfh-V3-Xaz" kind="presentation" identifier="go" id="oHg-hn-se5"/>
+                        <segue destination="4D0-Sn-ZWw" kind="presentation" identifier="login" id="ctW-FQ-9Xq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1033" y="162"/>
+            <point key="canvasLocation" x="-1083" y="286"/>
         </scene>
         <!--play-->
         <scene sceneID="wJB-OE-zzk">

@@ -14,4 +14,8 @@
 @property(nonatomic,copy)NSString*title;
 @property(nonatomic,copy)NSString*appID;
 
+@property(nonatomic,copy)NSString*context;
+
+@property(nonatomic,copy)NSString*status;
+
 @end

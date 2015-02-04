@@ -15,11 +15,13 @@
 #import "WatchVideoListUserInfo.h"
 #import "WatchBookListUserInfo.h"
 
-#define AddressIP @"http://122.225.196.222"
+#import "AFNetworking.h"
 
+#define AddressIP @"http://www.bodhiworld.com"
 
-//@"http://192.168.1.108:8080"
 //@"http://122.225.196.222"
+
+
 
 static JsonPostModel*jsonP;
 static UIAlertView*waitAlertView;
@@ -62,33 +64,67 @@ static UIAlertView*waitAlertView;
 
 
 
--(void)postByApiName:(NSString*)apiName andParams:(NSString*)params andCallBack:(CallBack)callBack
+-(void)postByApiName:(NSString*)apiName andParams:(NSDictionary*)params andCallBack:(CallBack)callBack
 {
     //role mainView scrolleView image
+    
+    
     [self showWaitAlertView];
     NSString*path = [NSString stringWithFormat:@"%@/bodhiworld_home/AppController/%@",AddressIP,apiName];
-//    NSLog(@"%@???????????%@",path,params);
     
     
-    NSURL*url = [NSURL URLWithString:path];
-    NSMutableURLRequest*request = [NSMutableURLRequest requestWithURL:url];
+//    NSURL*url = [NSURL URLWithString:path];
+//    NSMutableURLRequest*request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+//    
+//    
+//    [request setHTTPMethod:@"POST"];
+//    [request setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    
+//    NSURLSession*session = [NSURLSession sharedSession];
+//    NSURLSessionDataTask*task =[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+//        
+//        callBack(dic);
+//        
+//        [self dismissWaitAlertView];
+//        
+//    }];
+//    [task resume];
     
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSURLSession*session = [NSURLSession sharedSession];
-    NSURLSessionDataTask*task =[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    
+    
+    
+    AFHTTPRequestOperationManager*manager = [AFHTTPRequestOperationManager manager];
+    
+    
+    [manager POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+        NSLog(@"success");
         
-//        NSLog(@"%@",dic);
-        callBack(dic);
         
+        
+//        NSDictionary*dic = responseObject;
+        callBack(responseObject);
+        [self dismissWaitAlertView];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"%@",error);
+        UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请求数据失败，请查看网络是否异常!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        
+        [av show];
         [self dismissWaitAlertView];
         
     }];
-    [task resume];
     
-
+    
+    
+    
+    
+    
 
 }
 
@@ -122,18 +158,22 @@ static UIAlertView*waitAlertView;
 //    NSLog(@"%@",allParams);
     
     
+    [self showWaitAlertView];
     
+//     NSString*allParams = [NSString stringWithFormat:@"locale=%@&imgType=WEB&imgSize=1920*1920",[self currentLanguage]];
+//    NSString*languages = [self currentLanguage];
     
-     NSString*allParams = [NSString stringWithFormat:@"locale=%@&imgType=WEB&imgSize=1920*1920",[self currentLanguage]];
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    
     
     [self postByApiName:@"homeList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
-//        NSLog(@"%@",dic);
         
         NSArray*adv = [dic objectForKey:@"adv"];
         
         
         callBack(adv);
+        
     }];
     
 
@@ -145,39 +185,65 @@ static UIAlertView*waitAlertView;
 
 -(void)requestPlayViewData:(CallBack)callBack
 {
-    [self postByApiName:@"edAppList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    
+    [self postByApiName:@"edAppList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic  =obj;
-    NSArray*app = [dic objectForKey:@"app"];
         
-        callBack(app);
+        NSLog(@"dic -----------%@",dic);
+       
+        
+        callBack(dic);
+        
     }];
     
 
 }
 -(void)requestPlayViewedAppDetailWithParams:(NSString*)params and:(CallBack)callBack
 {
-    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&AppId=%@",params];
     
+//    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&AppId=%@",params];
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],
+                               @"imgType":@"WEB",
+                               @"imgSize":@"1920*1920",
+                               @"AppId":params };
     
     [self postByApiName:@"edAppDetail" andParams:allParams andCallBack:^(id obj) {
         
         NSDictionary*dic = obj;
         
+//        NSLog(@"%@",dic);
+        
         
         callBack(dic);
+        
     }];
     
     
 }
 
+
+
+
+
+
+
 //Play  右视图界面加载
 -(void)requestPlayViewSegmentRightView:(CallBack)callBack
 {
-    [self postByApiName:@"socialList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],
+                               @"imgType":@"WEB",
+                               @"imgSize":@"1920*1920" };
+    
+    
+    [self postByApiName:@"socialList" andParams:allParams andCallBack:^(id obj) {
     
         NSDictionary*dic =obj;
         NSArray*socialAry= [dic objectForKey:@"social"];
 
+        
+//        NSLog(@"obj---------------%@",socialAry);
         
         callBack(socialAry);
         
@@ -187,16 +253,22 @@ static UIAlertView*waitAlertView;
 
 }
 
+
+
+
 -(void)requestPlayViewSocialWithParams:(NSString*)params andCallBack:(CallBack)callBack
 {
-    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&AppId=%@",params];
-    
+
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],
+                               @"imgType":@"WEB",@"imgSize":@"1920*1920",@"AppId":params };
     
     [self postByApiName:@"socialDetail" andParams:allParams andCallBack:^(id obj) {
         
         NSDictionary*dic = obj;
         
+        
         callBack(dic);
+
     }];
 
 }
@@ -213,7 +285,13 @@ static UIAlertView*waitAlertView;
 //watch main
 -(void)requestwatchMainViewWithCallBack:(CallBack)callBack
 {
-    [self postByApiName:@"watchList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    
+
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],
+                               @"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    
+    
+    [self postByApiName:@"watchList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
         
 //        NSLog(@"%@",dic);
@@ -221,7 +299,7 @@ static UIAlertView*waitAlertView;
         callBack(dic);
     }];
     
-    
+//    [self dismissWaitAlertView];
     
 }
 
@@ -232,7 +310,10 @@ static UIAlertView*waitAlertView;
 //Watch tvList
 -(void)requestWatchViewTVListsNumber:(CallBack)callBack
 {
-    [self postByApiName:@"tvList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    
+//    [self showWaitAlertView];
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    [self postByApiName:@"tvList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
         
         NSMutableArray*ary =[NSMutableArray array ];
@@ -270,7 +351,7 @@ static UIAlertView*waitAlertView;
        
         
         callBack(arry);
-        
+//        [self dismissWaitAlertView];
         
     }];
     
@@ -282,8 +363,9 @@ static UIAlertView*waitAlertView;
 
 -(void)requestWatchViewTVListWithpageNO:(NSString*)pageNo andPageSize:(NSString*)pageSize andCallBack:(CallBack)callBack
 {
-    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&pageNo=%@&pageSize=%@",pageNo,pageSize];
-    
+//    [self showWaitAlertView];
+//    NSString*allParams = [NSString stringWithFormat:@"imgType=WEB&imgSize=1920*1920&pageNo=%@&pageSize=%@",pageNo,pageSize];
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920",@"pageNo":pageNo,@"pageSize":pageSize };
     
     [self postByApiName:@"tvList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
@@ -316,7 +398,7 @@ static UIAlertView*waitAlertView;
         
         callBack(ary);
         
-        
+//        [self dismissWaitAlertView];
     }];
 
 
@@ -332,7 +414,10 @@ static UIAlertView*waitAlertView;
 //watch films
 -(void)requestwatchviewFilmsList:(CallBack)callBack
 {
-    [self postByApiName:@"filmsList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+//    [self showWaitAlertView];
+    
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    [self postByApiName:@"filmsList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
 //        NSLog(@"%@",obj);
         NSMutableArray*ary =[NSMutableArray array ];
@@ -367,7 +452,7 @@ static UIAlertView*waitAlertView;
         
         callBack(ary);
 //   直接回掉数组或者字典  在展开的时候做判断 ？
-        
+//        [self dismissWaitAlertView];
         
     }];
 
@@ -376,7 +461,10 @@ static UIAlertView*waitAlertView;
 // watchVideoList
 -(void)requestwatchViewVideoList:(CallBack)callBack
 {
-    [self postByApiName:@"videoList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    
+//    [self showWaitAlertView];
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    [self postByApiName:@"videoList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
         
         NSArray*videoAry = [dic objectForKey:@"video"];
@@ -410,6 +498,7 @@ static UIAlertView*waitAlertView;
         }
         
         callBack(ary);
+//        [self dismissWaitAlertView];
         
     }];
     
@@ -418,7 +507,11 @@ static UIAlertView*waitAlertView;
 // watchBookList
 -(void)requestwatchViewebookList:(CallBack)callBack
 {
-    [self postByApiName:@"ebookList" andParams:@"imgType=WEB&imgSize=1920*1920" andCallBack:^(id obj) {
+    
+//    [self showWaitAlertView];
+    
+    NSDictionary*allParams = @{@"locale":[self currentLanguage],@"imgType":@"WEB",@"imgSize":@"1920*1920" };
+    [self postByApiName:@"ebookList" andParams:allParams andCallBack:^(id obj) {
         NSDictionary*dic = obj;
         NSLog(@"%@",obj);
         NSArray*bookAry = [dic objectForKey:@"book"];
@@ -451,9 +544,73 @@ static UIAlertView*waitAlertView;
             }
         }
         callBack(ary);
-        
+//        [self dismissWaitAlertView];
     }];
     
 }
+
+
+
+//登录 注册
+-(void)requestLoginWithUserName:(NSString*)userName andPassWord:(NSString*)passWord andCallBack:(CallBack)callBack
+{
+    NSString*usernamea = [userName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString*un = [usernamea stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    
+    NSString*passworda = [passWord stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString*pw = [passworda stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+//    NSString*params =[NSString stringWithFormat:@"userName=%@&passWord=%@",un,pw];
+    
+    NSDictionary*allParams = @{@"userName":un,@"passWord":pw };
+
+        [self postByApiName:@"login" andParams:allParams andCallBack:^(id obj) {
+           
+            NSDictionary*dic = obj;
+            callBack(dic);
+//            NSLog(@"%@",dic);
+        }];
+    
+
+
+
+}
+
+-(void)requestRegisteWithUserName:(NSString*)userName andPassWord:(NSString*)passWord andEmail:(NSString*)email andLocale :(NSString*)locale  andCallBack:(CallBack)callBack
+{
+    
+    NSString*usernamea = [userName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString*un = [usernamea stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    
+    NSString*passworda = [passWord stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString*pw = [passworda stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+//    NSString*allParams = [NSString stringWithFormat:@"userName=%@&passWord=%@&email=%@&locale=%@",un,pw,email,locale];
+    
+    NSDictionary*allParams = @{@"userName":un,@"passWord":pw,@"email":email,@"locale":locale};
+    
+    [self postByApiName:@"register" andParams:allParams andCallBack:^(id obj) {
+        if (![obj isMemberOfClass:[NSNull class]]) {
+            NSDictionary*dic = obj;
+            
+            callBack(dic);
+        
+        
+    }
+
+    }];
+    
+
+
+}
+
 
 @end

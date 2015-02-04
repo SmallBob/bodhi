@@ -8,7 +8,7 @@
 
 #import "FiveViewController.h"
 
-@interface FiveViewController ()
+@interface FiveViewController ()<UIAlertViewDelegate>
 @property(nonatomic,strong)UIView * leftView;
 @property(nonatomic,strong)UIView * leftBtnRoleView;
 @property(nonatomic,strong)UISegmentedControl*segmentedControl;
@@ -16,6 +16,8 @@
 
 
 @property(nonatomic,strong)UIView * rightView;
+
+@property(nonatomic)NSInteger num;
 
 @end
 
@@ -59,8 +61,8 @@
 -(void)creatBackBtn
 {
     
-    UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 80, 60)];
-    [backBtn setImage:[UIImage imageNamed:@"screenTitle.png"] forState:UIControlStateNormal];
+    UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 75, 55)];
+    [backBtn setImage:[UIImage imageNamed:@"ingame_logo"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(backMainView:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backBtn];
     UIButton*studyBtn;
@@ -68,7 +70,7 @@
         //左边 10  右边 5 间距 5
         CGFloat btnWidth= (self.view.frame.size.width-100-5-20)/4;
         
-        studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(90+i*(btnWidth+5), 34, btnWidth, 55)];
+        studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(105+i*(btnWidth+5), 34, btnWidth, btnWidth)];
         studyBtn.tag=i;
         [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play_0%d.png",i]] forState:UIControlStateNormal];
         [studyBtn addTarget:self action:@selector(goSecondView:) forControlEvents:UIControlEventTouchUpInside];
@@ -139,7 +141,7 @@
         
     }
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,5*width+5*6,sv.frame.size.width,80)];
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,5*width+5*6,sv.frame.size.width,50)];
     
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
@@ -149,10 +151,10 @@
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 30)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 30)];
     
     
     [oneIV addSubview:fiveBtnLeft];
@@ -167,7 +169,7 @@
     
     
     
-    [sv setContentSize:CGSizeMake(sv.frame.size.width, 5*width+5*6+200)];
+    [sv setContentSize:CGSizeMake(sv.frame.size.width, 5*width+5*6+170)];
     
     
     
@@ -197,10 +199,16 @@
     
     UIButton*btn = [[UIButton alloc]initWithFrame:CGRectMake(self.rightView.frame.size.width/2-10, 100, self.rightView.frame.size.width/2-30, 50)];
     [btn setImage:[UIImage imageNamed:@"create_03sticker_10"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(addRoleBag:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     
     [self.rightView addSubview:btn];
     
     
+    
+    
+//    表情
     UIImageView*imageview2 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 160, 50, 50)];
     imageview2.image = [UIImage imageNamed:@"create_03sticker_15"];
     [self.rightView addSubview:imageview2];
@@ -208,20 +216,20 @@
     
     
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.rightView.frame.size.height-110 ,self.rightView.frame.size.width,110)];
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.rightView.frame.size.height-80 ,self.rightView.frame.size.width,50)];
     
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
     
-    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 30)];
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 30)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 30)];
     
     
     [oneIV addSubview:fiveBtnLeft];
@@ -238,6 +246,15 @@
     
     
 
+}
+
+
+
+//下载表情包
+-(void)addRoleBag:(UIButton*)sender
+{
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"表情包下载，更新中..." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+    [av show];
 }
 
 
@@ -303,13 +320,16 @@
             
             
     
-            UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(2, 32, self.view.frame.size.width-4, self.view.bounds.size.height-200)];
+            UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(33, 32, self.view.frame.size.width-66, self.leftBtnRoleView.frame.size.height - 32-2-50)];
             imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"750wallpaper_0%d.jpg",sender.tag+1]];
             
             [self.leftBtnRoleView addSubview:imageView];
             
-            UIButton*btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80,self.view.frame.size.height-165, 160, 40)];
-        
+            UIButton*btn1 = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80,52, 160, 40)];
+    
+            btn1.tag = sender.tag;
+    
+    
             [btn1 setImage:[UIImage imageNamed:@"create_02getwallpaper_20141105_08"] forState:UIControlStateNormal];
 #pragma get this wallPaper
             
@@ -322,20 +342,20 @@
             
             
     
-    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-120,self.view.frame.size.width,20)];
+    UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,self.leftBtnRoleView.frame.size.height-50,self.view.frame.size.width,50)];
     
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
     
-    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 30)];
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 20)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 20)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 20)];
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 20)];
     fiveIVdown.backgroundColor = [UIColor redColor];
     
     [oneIV addSubview:fiveBtnLeft];
@@ -354,11 +374,37 @@
 
 -(void)click:(UIButton*)sender
 {
-    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"loading..." delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+    self.num = sender.tag;
+    UIAlertView*av = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否下载当前照片" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    
+    
+    
     [av show];
+    
+    
+   
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex==1) {
+        UIImageWriteToSavedPhotosAlbum([UIImage imageNamed:[NSString stringWithFormat:@"750wallpaper_0%d.jpg",self.num+1]], self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
+    }
 
 }
 
+
+- (void)imageSavedToPhotosAlbum:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    NSString *message = @"呵呵";
+    if (!error) {
+        message = @"成功保存到相册";
+    }else
+    {
+        message = [error description];
+    }
+    NSLog(@"message is %@",message);
+}
 
 -(void)backLeftView:(UIButton*)sender
 {

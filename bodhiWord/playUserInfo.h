@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface playUserInfo : NSObject
-@property(nonatomic,copy)NSString*playLeftViewIconUrl;
+@property(nonatomic,copy)NSString*leftSegmentconUrl;
 @property(nonatomic,copy)NSString*leftSegmenttitle;
 @property(nonatomic,copy)NSString*leftSegmenttype;
 @property(nonatomic,copy)NSString*leftSegmentId;

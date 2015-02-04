@@ -15,6 +15,6 @@
 @property(nonatomic,copy)NSString*socialDetailSocialID;
 @property(nonatomic,copy)NSString*title;
 
-
+@property(nonatomic,copy)NSString*status;
 
 @end

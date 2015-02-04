@@ -11,6 +11,7 @@
 #import "JsonPostModel.h"
 
 #import "playUserInfo.h"
+#import "playEdAppListAdvUserInfo.h"
 #import "playEdAppDetailAppUserInfo.h"
 #import "playEdAppDetailAppImgUserInfo.h"
 #import "playSocialDetailSocial.h"
@@ -42,11 +43,13 @@
 
 
 @property(nonatomic,strong)NSMutableArray*ary;
-//@property(nonatomic,strong)NSMutableArray*rightSegmentAry;
+
 
 @property(nonatomic,strong)UISegmentedControl *segmentedControl ;
 @property(nonatomic,strong)JsonPostModel*jpm;
 
+@property(nonatomic,strong)UIButton*advBtn;
+@property(nonatomic,strong)NSMutableArray*playEdAppListAdvAry;
 @property(nonatomic,strong)NSMutableArray*playEdAppDetailAppAry;
 @property(nonatomic,strong)NSMutableArray*playEdAppDetailAppImgAry;
 @property(nonatomic,strong)NSMutableArray*playSocialAry;
@@ -63,9 +66,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBarController.tabBar.hidden = YES;
+    
     //  添加主界面点击按钮
     [self creatBackBtn];
-//    NSLog(@"%d",self.view.subviews.count);
+
     
     
  }
@@ -73,8 +77,10 @@
 
 -(void)UIUpdate
 {
+    
+//    [self creatRightView];
+    
     [self creatLeftView];
-    [self creatRightView];
     
     self.viewRight.hidden= YES;
     self.clickView.hidden = YES;
@@ -107,21 +113,50 @@
         self.jpm = [JsonPostModel shareJsonPostModel];
         self.ary = [NSMutableArray array];
         self.playSocialAry =[NSMutableArray array];
-    
+        self.playEdAppListAdvAry = [NSMutableArray array ];
 
   
         
 //界面显示时 点击刷新重载数据   segment==0
     [self.jpm requestPlayViewData:^(id obj) {
 
-        NSArray*appAry = obj;
-
+        NSDictionary*dic = obj;
+        
+        NSArray*appAry = [dic objectForKey:@"app"];
+        
+        NSArray*advAry = [dic objectForKey:@"adv"];
+//        NSLog(@"%@",advAry);
+        
+        if (![advAry isMemberOfClass:[NSNull class]]) {
+            for (NSDictionary*dicAdv in advAry) {
+                
+                playEdAppListAdvUserInfo*advUserInfo = [[playEdAppListAdvUserInfo alloc]init];
+                advUserInfo.iconUrl = [dicAdv objectForKey:@"iconUrl"];
+                advUserInfo.advID = [dicAdv objectForKey:@"id"];
+                advUserInfo.imgSize = [dicAdv objectForKey:@"imgSize"];
+                advUserInfo.imgType = [dicAdv objectForKey:@"imgType"];
+                advUserInfo.iosLink = [dicAdv objectForKey:@"iosLink"];
+                advUserInfo.ip = [dicAdv objectForKey:@"ip"];
+                advUserInfo.language =[dicAdv objectForKey:@"language"];
+                advUserInfo.name = [dicAdv objectForKey:@"name"];
+                advUserInfo.postion = [dicAdv objectForKey:@"postion"];
+                advUserInfo.webLink = [dicAdv objectForKey:@"webLink"];
+                
+                
+                
+                [self.playEdAppListAdvAry addObject:advUserInfo];
+                
+                
+            }
+        }
+        
+        
         
         if (![appAry isMemberOfClass:[NSNull class]]) {
             
             for (NSDictionary*dicApp  in appAry) {
                 playUserInfo*pui = [[playUserInfo alloc]init];
-                pui.playLeftViewIconUrl = [dicApp objectForKey:@"iconUrl"];
+                pui.leftSegmentconUrl = [dicApp objectForKey:@"iconUrl"];
                 pui.leftSegmenttitle = [dicApp objectForKey:@"title"];
                 pui.leftSegmenttype = [dicApp objectForKey:@"type"];
                 pui.leftSegmentId = [dicApp objectForKey:@"id"];
@@ -136,29 +171,8 @@
            [self UIUpdate];
         });
     }];
-//    segment==1 右边试图
-        [self.jpm requestPlayViewSegmentRightView:^(id obj) {
-            NSArray*socialAry = obj;
-            
-            if (![socialAry isMemberOfClass:[NSNull class]]) {
-                
-                for (NSDictionary*dicSocial in socialAry) {
-                    playSocialUserInfo*psUser=[[playSocialUserInfo alloc]init];
-                    psUser.describes = [dicSocial objectForKey:@"describes"];
-                    psUser.iconUrl = [dicSocial objectForKey:@"iconUrl"];
-                    psUser.playSociaID = [dicSocial objectForKey:@"id"];
-                    psUser.keywords = [dicSocial objectForKey:@"keywords"];
-                    psUser.title = [dicSocial objectForKey:@"title"];
-                    
-                    [self.playSocialAry addObject:psUser];
-                }
-            }
-            
-        }];
         
-        
-        
-        
+     
         
     }else {
         if (!self.viewFirst) {
@@ -185,8 +199,11 @@
 -(void)creatBackBtn
 {
     
-    UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 80, 60)];
-    [backBtn setImage:[UIImage imageNamed:@"screenTitle.png"] forState:UIControlStateNormal];
+    UIButton*backBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 34, 75, 55)];
+    [backBtn setImage:[UIImage imageNamed:@"ingame_logo.png"] forState:UIControlStateNormal];
+//    backBtn.backgroundColor = [UIColor redColor];
+    
+//    backBtn.backgroundColor = [UIColor redColor];
     [backBtn addTarget:self action:@selector(backMainView:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backBtn];
     
@@ -197,10 +214,12 @@
         //左边 10  右边 5 间距 5
         CGFloat btnWidth= (self.view.frame.size.width-100-5-20)/4;
         
-        studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(90+i*(btnWidth+5), 34, btnWidth, 55)];
+        studyBtn=[[UIButton alloc]initWithFrame:CGRectMake(105+i*(btnWidth+5), 34, btnWidth, btnWidth)];
         studyBtn.tag=i;
         [studyBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play_0%d.png",i]] forState:UIControlStateNormal];
         [studyBtn addTarget:self action:@selector(goSecondView:) forControlEvents:UIControlEventTouchUpInside];
+//        NSLog(@"%.2f---%.2f",studyBtn.frame.size.width,studyBtn.frame.size.height);
+        
         
         [self.view addSubview:studyBtn];
         
@@ -231,12 +250,17 @@
         
       // 在当前界面 点击 当前显示界面按钮  就行界面刷新
         [self.viewFirst removeFromSuperview];
+        self.viewFirst = nil;
         [self.clickView removeFromSuperview];
+        self.clickView = nil;
         [self.rightClickView removeFromSuperview];
+        self.rightClickView = nil;
+        
         [self.viewRight removeFromSuperview];
+        self.viewRight = nil;
         
         [self.segmentedControl removeFromSuperview];
-        
+        self.segmentedControl = nil;
 
 //      清除图片缓存
         
@@ -245,22 +269,56 @@
 //       [[SDImageCache sharedImageCache] clearMemory];
 //        NSLog(@"%@",NSHomeDirectory());
         
-        
+        self.ary = [NSMutableArray array];
+        self.playEdAppListAdvAry = [NSMutableArray array ];
+
         [self.jpm requestPlayViewData:^(id obj) {
-            NSArray*appAry = obj;
             
-            self.ary = [NSMutableArray array];
+            NSDictionary*dic = obj;
+            
+            NSArray*appAry = [dic objectForKey:@"app"];
+            
+            NSArray*advAry = [dic objectForKey:@"adv"];
+            //        NSLog(@"%@",advAry);
+            
+            
+#pragma 广告
+            
+            if (![advAry isMemberOfClass:[NSNull class]]) {
+                for (NSDictionary*dicAdv in advAry) {
+                    playEdAppListAdvUserInfo*advUserInfo = [[playEdAppListAdvUserInfo alloc]init];
+                    advUserInfo.iconUrl = [dicAdv objectForKey:@"iconUrl"];
+                    advUserInfo.advID = [dicAdv objectForKey:@"id"];
+                    advUserInfo.imgSize = [dicAdv objectForKey:@"imgSize"];
+                    advUserInfo.imgType = [dicAdv objectForKey:@"imgType"];
+                    advUserInfo.ip = [dicAdv objectForKey:@"ip"];
+                    advUserInfo.language =[dicAdv objectForKey:@"language"];
+                    advUserInfo.name = [dicAdv objectForKey:@"name"];
+                    advUserInfo.postion = [dicAdv objectForKey:@"postion"];
+                    advUserInfo.webLink = [dicAdv objectForKey:@"webLink"];
+                    advUserInfo.iosLink = [dicAdv objectForKey:@"iosLink"];
+                    
+                    
+                    [self.playEdAppListAdvAry addObject:advUserInfo];
+                    
+                    
+                }
+            }
+            
+            
             
             if (![appAry isMemberOfClass:[NSNull class]]) {
                 
                 for (NSDictionary*dicApp  in appAry) {
                     playUserInfo*pui = [[playUserInfo alloc]init];
-                    pui.playLeftViewIconUrl = [dicApp objectForKey:@"iconUrl"];
+                    pui.leftSegmentconUrl = [dicApp objectForKey:@"iconUrl"];
                     pui.leftSegmenttitle = [dicApp objectForKey:@"title"];
                     pui.leftSegmenttype = [dicApp objectForKey:@"type"];
                     pui.leftSegmentId = [dicApp objectForKey:@"id"];
-                    
+                    //                NSLog(@"puiID::::%@",pui.leftSegmentId);
                     [self.ary addObject:pui];
+                    
+
                                    }
                 
             }
@@ -275,25 +333,7 @@
             });
         }];
 
-        //    segment==1 右边试图
-        [self.jpm requestPlayViewSegmentRightView:^(id obj) {
-            NSArray*socialAry = obj;
-            self.playSocialAry = [NSMutableArray array ];
-            if (![socialAry isMemberOfClass:[NSNull class]]) {
-                
-                for (NSDictionary*dicSocial in socialAry) {
-                    playSocialUserInfo*psUser=[[playSocialUserInfo alloc]init];
-                    psUser.describes = [dicSocial objectForKey:@"describes"];
-                    psUser.iconUrl = [dicSocial objectForKey:@"iconUrl"];
-                    psUser.playSociaID = [dicSocial objectForKey:@"id"];
-                    psUser.keywords = [dicSocial objectForKey:@"keywords"];
-                    psUser.title = [dicSocial objectForKey:@"title"];
-                    
-                    [self.playSocialAry addObject:psUser];
-                }
-            }
-            
-        }];
+        
     }
     
 }
@@ -313,18 +353,38 @@
             //弹簧效果
             self.firstSV.bounces=NO;
 
-            
-            UIScrollView*leftRightSV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,170)];
-            
-            UIImageView*iv = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"play_01mainpage_20141105_21.png"]];
-            iv.frame=leftRightSV.frame;
-            [leftRightSV addSubview:iv];
+    
+#pragma play 广告图
+
+    
+    playEdAppListAdvUserInfo *advUserInfo = self.playEdAppListAdvAry[0];
+    
+    
+    self.advBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,170)];
+//    [advBtn setImage:[UIImage imageNamed:@"play_01mainpage_20141105_21.png"] forState:UIControlStateNormal];
+    
+    
+    
+    
+    
+    [self.advBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:advUserInfo.iconUrl] forState:UIControlStateNormal];
+    [self.advBtn addTarget:self action:@selector(secondLeftViewBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [self.firstSV addSubview:self.advBtn];
+    
 #pragma 左右滚动
             
-            [self.firstSV addSubview:leftRightSV];
+//            [self.firstSV addSubview:leftRightSV];
+    
             
-            
-            
+  
+    
+    
+    
+    
+    
+    
 #pragma people
             CGFloat peopleWidth = (self.view.frame.size.width-60)/2;
     
@@ -336,7 +396,7 @@
                                                                    140)];
                 
                 
-                UIButton*btn=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height-30)];
+                UIButton*btn=[[UIButton alloc]initWithFrame:CGRectMake(10, 0, view.frame.size.width-20, view.frame.size.height-20)];
                 
                 btn.tag = i;
                 
@@ -349,18 +409,21 @@
               
                 
                 
-                [btn sd_setImageWithURL:[NSURL URLWithString:userInfo.playLeftViewIconUrl] forState:UIControlStateNormal];
+                [btn sd_setImageWithURL:[NSURL URLWithString:userInfo.leftSegmentconUrl] forState:UIControlStateNormal];
                 
-                [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
+                [btn addTarget:self action:@selector(secondLeftViewBtn:) forControlEvents:UIControlEventTouchUpInside];
                 
                
                 [view addSubview:btn];
                 
-                UIImageView*iv=[[UIImageView alloc]initWithFrame:CGRectMake(0, view.frame.size.height-30, 30, 30)];
+                UIImageView*iv=[[UIImageView alloc]initWithFrame:CGRectMake(0, view.frame.size.height-20, 20, 20)];
+                
+                
                 iv.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userInfo.leftSegmenttype]]];
+                
                 [view addSubview:iv];
                 
-                UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(30, view.frame.size.height-30, view.frame.size.width-30, 30)];
+                UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(20, view.frame.size.height-20, view.frame.size.width-20, 20)];
                 label.text = userInfo.leftSegmenttitle;
                 label.font = [UIFont systemFontOfSize:10];
                 label.textColor = [UIColor blueColor];
@@ -380,23 +443,23 @@
     
     UIView*fiveIVdown=[[UIView alloc]initWithFrame:
                        CGRectMake(0,
-                                  10+leftRightSV.frame.size.height+
+                                  self.advBtn.frame.size.height+
                                 (self.ary.count%2 == 0 ?  20+self.ary.count/2*150 :  20+(self.ary.count/2+1)*150) ,
                                   self.firstSV.frame.size.width,
-                                  80)];
+                                  50)];
     
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
     
-    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 30)];
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 60, 20)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 20)];
     
     [oneIV addSubview:fiveBtnLeft];
     [oneIV addSubview:fiveBtnRight];
@@ -406,13 +469,13 @@
  
             CGFloat btnHeght = self.ary.count%2 == 0 ?  20+self.ary.count/2*150 :  20+(self.ary.count/2+1)*150;
             
-            CGFloat height  =leftRightSV.frame.size.height+
-                              btnHeght+110;
+            CGFloat height  =self.advBtn.frame.size.height+
+                              btnHeght+110-30;
             
     
             [self.firstSV setContentSize:CGSizeMake(self.firstSV.frame.size.width, height)];
             
-           
+
             [self.viewFirst addSubview:self.firstSV];
             
             [self.view addSubview: self.viewFirst];
@@ -443,6 +506,35 @@
             self.viewRight.hidden = NO;
             self.clickView.hidden = YES;
             
+            if (!self.viewRight) {
+                 
+            self.playSocialAry = [NSMutableArray array ];
+            [self.jpm requestPlayViewSegmentRightView:^(id obj) {
+                NSArray*socialAry = obj;
+                
+                if (![socialAry isMemberOfClass:[NSNull class]]) {
+                    
+                    for (NSDictionary*dicSocial in socialAry) {
+                        playSocialUserInfo*psUser=[[playSocialUserInfo alloc]init];
+                        psUser.describes = [dicSocial objectForKey:@"describes"];
+                        psUser.iconUrl = [dicSocial objectForKey:@"iconUrl"];
+                        psUser.playSociaID = [dicSocial objectForKey:@"id"];
+                        psUser.keywords = [dicSocial objectForKey:@"keywords"];
+                        psUser.title = [dicSocial objectForKey:@"title"];
+                        
+                        [self.playSocialAry addObject:psUser];
+                    }
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self creatRightView];
+                });
+                
+              }];
+            }else{
+                
+            
+            }
             
                 }
             break;
@@ -458,15 +550,18 @@
 
 
 
-#pragma click
--(void)click:(UIButton*)sender
+#pragma secondLeftViewBtn
+-(void)secondLeftViewBtn:(UIButton*)sender
 {
     self.playEdAppDetailAppAry =[NSMutableArray array];
     self.playEdAppDetailAppImgAry = [NSMutableArray array];
     
     
     self.viewFirst.hidden = YES;
+    
     self.clickView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, self.view.frame.size.height-95)];
+//    self.clickView.backgroundColor = [UIColor redColor];
+    
         UIView*viewF=[[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
     
     UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
@@ -480,11 +575,29 @@
     
     [viewF addSubview:imageView];
     [viewF addSubview:btn];
+ 
     
     
-    playUserInfo*userInfo = self.ary[sender.tag];
+
     
-    [self.jpm requestPlayViewedAppDetailWithParams:userInfo.leftSegmentId and:^(id obj) {
+    
+    NSString*ID = nil;
+    
+    
+    if ([sender isEqual:self.advBtn]) {
+        playEdAppListAdvUserInfo*advUserInfo = self.playEdAppListAdvAry[0];
+        
+        ID = advUserInfo.iosLink;
+        
+    }else{
+         playUserInfo*userInfo = self.ary[sender.tag];
+        
+        ID = userInfo.leftSegmentId;
+    }
+    
+      
+    
+    [self.jpm requestPlayViewedAppDetailWithParams:ID and:^(id obj) {
         
         
         NSDictionary*dic = obj;
@@ -501,6 +614,9 @@
             playEdappDetail.title = [dic objectForKey:@"title"];
             playEdappDetail.appID = [dic objectForKey:@"id"];
             
+            playEdappDetail.status = [dic objectForKey:@"status"];
+            
+            playEdappDetail.context = [dic objectForKey:@"context"];
             
             [self.playEdAppDetailAppAry addObject:playEdappDetail];
             
@@ -512,56 +628,107 @@
             playAppImg.imgUrl = [dicAppImg objectForKey:@"imgUrl"];
             playAppImg.appImgID = [dicAppImg objectForKey: @"appId"];
             
+            
+            
             [self.playEdAppDetailAppImgAry addObject:playAppImg];
             
             
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            
+            
+            UIScrollView*centerSV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.clickView.frame.size.width, self.clickView.frame.size.height-80)];
+            
+            centerSV.pagingEnabled = YES;
+            centerSV.bounces = NO;
+            centerSV.showsVerticalScrollIndicator= NO;
+            centerSV.delegate = self;
+            
+            
+        
+            
+            
+            
             playEdAppDetailAppUserInfo*appUserInfo = [self.playEdAppDetailAppAry lastObject];
             
             
-            UIImageView*peopleIV = [[UIImageView alloc]initWithFrame:CGRectMake(20, 50, 80, 80)];
+            UIImageView*peopleIV = [[UIImageView alloc]initWithFrame:CGRectMake(20, 20, 80, 80)];
             
             peopleIV.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:appUserInfo.iconUrl]]];
             
-            UIImageView*smallIV=[[UIImageView alloc]initWithFrame:CGRectMake(105, 60, 30, 30)];
+            UIImageView*smallIV=[[UIImageView alloc]initWithFrame:CGRectMake(105, 30, 30, 30)];
             
             smallIV.image =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:appUserInfo.type]]];
             
             
             
-            UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(135, 60, 100, 30)];
+            UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(135, 30, 100, 30)];
             label.text = appUserInfo.title;
             label.font = [UIFont systemFontOfSize:10];
-            label.textColor = [UIColor blueColor];
-            
-            
-            UIButton*playBtn=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20-100, 100, 100, 30)];
-            [playBtn setImage:[UIImage imageNamed:@"play_03bodhirace_20141105_15.png"] forState:UIControlStateNormal];
-            
-            
-            [self.clickView addSubview:peopleIV];
-            [self.clickView addSubview:smallIV];
-            [self.clickView addSubview:label];
-            [self.clickView addSubview:playBtn];
+            label.textColor =  [UIColor colorWithRed:25/255.0 green:87/255.0 blue:28/255.0 alpha:1];
             
             
             
-            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0, self.clickView.frame.size.height-50, self.clickView.frame.size.width, 80)];
+#pragma coming soon
+            
+            if ((appUserInfo.status != nil) && (([appUserInfo.status intValue] ==0 )|| ([appUserInfo.status intValue] == 2))) {
+                
+                UILabel*comingsoon = [[UILabel alloc]initWithFrame:CGRectMake(105, 70, 100, 30)];
+                comingsoon.text = @"coming soon";
+                comingsoon.font = [UIFont systemFontOfSize:16.0f];
+                comingsoon.textColor =[UIColor colorWithRed:25/255.0 green:87/255.0 blue:28/255.0 alpha:1];
+                
+                
+                [centerSV addSubview:comingsoon];
+                
+            }
+            
+            
+            
+            
+            
+            UIButton*playBtn=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-10-100, 70, 100, 30)];
+            [playBtn setImage:[UIImage imageNamed:@"btn_ios.png"] forState:UIControlStateNormal];
+            
+            [playBtn addTarget:self action:@selector(playBtn:) forControlEvents:UIControlEventTouchUpInside];
+            
+            
+            
+            UITextView*textView = [[UITextView alloc]initWithFrame:CGRectMake(10, 120, self.view.frame.size.width-20, 110)];
+            textView.text = appUserInfo.context;
+            textView.textColor = [UIColor colorWithRed:25/255.0 green:87/255.0 blue:28/255.0 alpha:1];
+            
+            textView.editable = NO;
+            textView.selectable= NO;
+            
+            [centerSV addSubview:textView];
+            
+            
+            
+            
+            [centerSV addSubview:peopleIV];
+            [centerSV addSubview:smallIV];
+            [centerSV addSubview:label];
+            [centerSV addSubview:playBtn];
+            
+            
+            
+            UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0, self.clickView.frame.size.height-50, self.clickView.frame.size.width, 50)];
             UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
             oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
             [fiveIVdown addSubview:oneIV];
             
-            UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+            UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 30)];
             twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
             [fiveIVdown addSubview:twoIV];
             
-            UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 20)];
+            UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 20)];
+//            fiveBtnLeft.backgroundColor = [UIColor redColor];
             
             
-            UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 20)];
-            
+            UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 20)];
+//            fiveBtnRight.backgroundColor = [UIColor redColor];
             
             
             [oneIV addSubview:fiveBtnLeft];
@@ -570,10 +737,10 @@
             [self.clickView addSubview:fiveIVdown];
             
             
-            CGFloat height =self.clickView.frame.size.height - fiveIVdown.frame.size.height - 10 - 220;
+//            CGFloat height =self.clickView.frame.size.height - fiveIVdown.frame.size.height - 10 - 220;
             
             
-            UIView*svView =[[UIView alloc]initWithFrame:CGRectMake(10, self.clickView.frame.size.height - fiveIVdown.frame.size.height - 10 - 220, self.view.frame.size.width-20, 220)];
+            UIView*svView =[[UIView alloc]initWithFrame:CGRectMake(10, 240, self.view.frame.size.width-20, 220)];
             
             UIScrollView*sv  =[[UIScrollView alloc]initWithFrame:CGRectMake(0,0,svView.bounds.size.width,svView.bounds.size.height)];
             sv.pagingEnabled = YES;
@@ -607,7 +774,7 @@
             
             [sv setContentSize:CGSizeMake(sv.frame.size.width*self.playEdAppDetailAppImgAry.count, sv.frame.size.height)];
             
-            [svView addSubview:sv];
+           [svView addSubview:sv];
             
             //创建UIPageControl
             self. pageCtrl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, svView.frame.size.height-20, svView.bounds.size.width-20, 20)];  //创建UIPageControl，位置在屏幕最下方。
@@ -620,9 +787,15 @@
             
             [svView addSubview:self.pageCtrl];
             
-            [self.clickView addSubview:svView];
+            [centerSV addSubview:svView];
             
             [self.clickView addSubview:viewF];
+            
+            
+            
+            [centerSV setContentSize:CGSizeMake(centerSV.frame.size.width, 500)];
+            
+            [self.clickView addSubview:centerSV];
             [self.view addSubview:self.clickView];
 
             
@@ -642,6 +815,14 @@
     
 }
 
+#pragma 左视图role按钮 点击界面 ios按钮
+
+-(void)playBtn:(UIButton*)sender
+{
+    NSLog(@"playBtn");
+
+}
+
 #pragma backLeftView
 
 -(void)backLeftView:(UIButton *)sender
@@ -655,8 +836,8 @@
 
 -(void)creatRightView
 {
-     self.viewRight  =[[UIView alloc]initWithFrame:CGRectMake(0, 125, self.view.frame.size.width, self.view.frame.size.height-95)];
-  
+     self.viewRight  =[[UIView alloc]initWithFrame:CGRectMake(0, 125, self.view.frame.size.width, self.view.frame.size.height-75)];
+//    self.viewRight.backgroundColor = [UIColor redColor];
     
 #pragma 右试图
  
@@ -667,6 +848,13 @@
         
         UIView*view = [[UIView alloc]initWithFrame:CGRectMake(0, i*100, self.view.frame.size.width, 100)];
         CGFloat height = view.frame.size.height - 20;
+        
+        
+        if (i%2 != 0) {
+//            #f2fcfe
+            view.backgroundColor = [UIColor colorWithRed:242/255.0 green:252/255.0 blue:254/255.0 alpha:1];
+        }
+        
         
         UIButton*iv1 = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, height, height)];
         
@@ -681,7 +869,11 @@
         UILabel*label = [[UILabel alloc]initWithFrame:CGRectMake(height+20, 30, view.frame.size.width-height-30, height)];
         label.text = psUser.describes;
         label.font = [UIFont systemFontOfSize:12];
-        label.textColor = [UIColor blueColor];
+        
+//        #0074fe
+        
+        label.textColor = [UIColor colorWithRed:0 green:116/255.0 blue:254/255.0 alpha:1];
+        
         CGSize labelSize = {0,0};
         labelSize = [label.text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(view.frame.size.width-height-30, height) lineBreakMode: UILineBreakModeWordWrap];
         label.numberOfLines = 3;
@@ -711,19 +903,19 @@
     
     
     UIView*fiveIVdown=[[UIView alloc]initWithFrame:CGRectMake(0,
-                                                                   self.viewRight.frame.size.height-100, self.viewRight.frame.size.width, 80)];
+                                                                   self.viewRight.frame.size.height-100, self.viewRight.frame.size.width, 50)];
     UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
     [fiveIVdown addSubview:oneIV];
     
-    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+    UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 30)];
     twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
     [fiveIVdown addSubview:twoIV];
     
-    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
+    UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 20)];
     
     
-    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
+    UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 20)];
     
     [oneIV addSubview:fiveBtnLeft];
     [oneIV addSubview:fiveBtnRight];
@@ -742,6 +934,7 @@
 -(void)rightBtnView:(UIButton*)sender
 {
     self.viewRight.hidden = YES;
+    
     self.playSocialDetailSocialImgAry = [NSMutableArray array];
     self.playSocialDetailSocialAry =[NSMutableArray array];
     
@@ -763,7 +956,7 @@
             psds.title = [dic objectForKey:@"title"];
             psds.socialDetailSocialID = [dic objectForKey:@"id"];
             psds.age =[dic objectForKey:@"age"];
-            
+            psds.status = [dic objectForKey:@"status"];
             
             [self.playSocialDetailSocialAry addObject:psds];
             
@@ -782,7 +975,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            self.rightClickView = [[UIView alloc]initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height-95)];
+            self.rightClickView = [[UIView alloc]initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height-65)];
             
             UIView*view = [[UIView alloc]initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, 30)];
             UIImageView*imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
@@ -811,15 +1004,16 @@
             
             labelName.text = psds.title;
             labelName.font = [UIFont systemFontOfSize:12];
-            labelName.textColor = [UIColor blueColor];
+            labelName.textColor = [UIColor colorWithRed:12/255.0 green:149/255.0 blue:254/255.0 alpha:1];
             CGSize labelSize = {0,0};
             labelSize = [labelName.text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(self.rightClickView.frame.size.width-115, 50) lineBreakMode: UILineBreakModeWordWrap];
             labelName.numberOfLines = 2;
             
             [self.rightClickView addSubview:labelName];
-            UILabel*labelAge = [[UILabel alloc]initWithFrame:CGRectMake(105, 120, self.rightClickView.frame.size.width-115, 30)];
+            
+            UILabel*labelAge = [[UILabel alloc]initWithFrame:CGRectMake(105, 110, self.rightClickView.frame.size.width-115, 30)];
             labelAge.text = [NSString stringWithFormat:@"Target age:%@",psds.age];
-            labelAge.textColor = [UIColor greenColor];
+            labelAge.textColor = [UIColor colorWithRed:89/255.0 green:176/255.0 blue:65/255.0 alpha:1];
             CGSize labelAgeSize = {0,0};
             labelAgeSize = [labelAge.text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(self.rightClickView.frame.size.width-115, 50) lineBreakMode: UILineBreakModeWordWrap];
             labelName.numberOfLines = 2;
@@ -827,10 +1021,27 @@
             [self.rightClickView addSubview:labelAge];
             
             
+            if (psds.status !=nil) {
+                if ([psds.status intValue] == 0|| [psds.status intValue] ==2) {
+                    UILabel*lb = [[UILabel alloc]initWithFrame:CGRectMake(105, 130,
+                                                                          self.rightClickView.frame.size.width-115, 25)];
+                    
+                    lb.text =@"coming soon";
+                    lb.textColor = [UIColor colorWithRed:89/255.0 green:176/255.0 blue:65/255.0 alpha:1];
+                    
+                    lb.font = [UIFont systemFontOfSize:15];
+                    
+                    [self.rightClickView addSubview:lb];
+                    
+                    
+                }
+            }
+            
 
-            UITextView*textView = [[UITextView alloc]initWithFrame:CGRectMake(10, 150, self.rightClickView.frame.size.width-20, 100)];
+            UITextView*textView = [[UITextView alloc]initWithFrame:CGRectMake(10, 165, self.rightClickView.frame.size.width-20, 100)];
             textView.text = psds.describes;
-            textView.textColor = [UIColor blackColor];
+            textView.textColor = [UIColor colorWithRed:25/255.0 green:87/255.0 blue:28/255.0 alpha:1];
+            
             textView.editable = NO;
             textView.selectable= NO;
             
@@ -838,7 +1049,7 @@
             [self.rightClickView addSubview:textView];
             
             
-            UIView*svView =[[UIView alloc]initWithFrame:CGRectMake(10, 260, self.rightClickView.frame.size.width-20, 150)];
+            UIView*svView =[[UIView alloc]initWithFrame:CGRectMake(10, 275, self.rightClickView.frame.size.width-20, 170)];
             
             UIScrollView*sv = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, svView.frame.size.width, svView.frame.size.height)];
             
@@ -886,26 +1097,32 @@
             
             
             UIImageView*fiveIVdown=[[UIImageView alloc]initWithFrame:CGRectMake(0,
-                                                                                self.self.rightClickView.frame.size.height-50, self.rightClickView.frame.size.width, 80)];
-            fiveIVdown.image=[UIImage imageNamed:@"Bodhiword_.png"];
+                                                                                self.self.rightClickView.frame.size.height-50, self.rightClickView.frame.size.width, 50)];
+//            fiveIVdown.image=[UIImage imageNamed:@"Bodhiword_.png"];
+            
+//    ????????????
+//            self.rightClickView.backgroundColor = [UIColor redColor];
+            
+            UIImageView*oneIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
+            oneIV.image = [UIImage imageNamed:@"Bodhiword_76"];
+            [fiveIVdown addSubview:oneIV];
+            
+            UIImageView*twoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 30)];
+            twoIV.image = [UIImage imageNamed:@"Bodhiword_77"];
+            [fiveIVdown addSubview:twoIV];
+            
+            UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(5 , 0, 65, 20)];
             
             
+            UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 65, 20)];
             
-            UIButton*fiveBtnLeft=[[UIButton alloc]initWithFrame:CGRectMake(10 , 0, 60, 30)];
-            [fiveBtnLeft setImage:[UIImage imageNamed:@"Bodhiword_35.png"] forState:UIControlStateNormal];
-            
-            
-            UIButton*fiveBtnRight=[[UIButton alloc]initWithFrame:CGRectMake(fiveIVdown.frame.size.width-70, 0, 60, 30)];
-            [fiveBtnRight setImage:[UIImage imageNamed:@"Bodhiword_37.png"] forState:UIControlStateNormal];
-            
-            
-            
-            [fiveIVdown addSubview:fiveBtnLeft];
-            
-            [fiveIVdown addSubview:fiveBtnRight];
-            
+            [oneIV addSubview:fiveBtnLeft];
+            [oneIV addSubview:fiveBtnRight];
             
             [self.rightClickView addSubview:fiveIVdown];
+            
+            
+
             
             [self.view addSubview:self.rightClickView];
 
